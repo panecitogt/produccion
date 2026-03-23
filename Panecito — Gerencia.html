@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)file:///C:/Users/titis/Downloads/panecito_gerencia_1.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panecito — Gerencia</title>
+<script src="./Panecito — Gerencia_files/xlsx.full.min.js.descarga"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --or:#C05A20;--or2:#D97840;--or-bg:#FEF6F2;
+  --text:#1A1A1A;--text2:#888;--bd:#E8E8E8;
+  --green:#2E7D42;--green-bg:#F0F9F2;
+  --red:#C03030;--red-bg:#FDF0F0;
+  --amber:#B85C00;--amber-bg:#FFF8E1;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F5F5F5;min-height:100vh;display:flex;justify-content:center;padding:16px;}
+.app{background:#fff;border-radius:16px;border:1px solid var(--bd);overflow:hidden;width:100%;max-width:420px;height:fit-content;box-shadow:0 4px 20px rgba(0,0,0,.07);}
+.topbar{background:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--or);}
+.logo{font-size:18px;font-weight:700;color:var(--or);}
+.tag{background:var(--or-bg);color:var(--or);font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;border:1px solid var(--or2);}
+.nav{display:flex;background:#fff;border-bottom:1px solid var(--bd);}
+.nb{flex:1;padding:9px 1px;font-size:9px;font-weight:700;text-align:center;color:#BBB;cursor:pointer;border:none;background:transparent;border-bottom:3px solid transparent;}
+.nb.active{color:var(--or);border-bottom:3px solid var(--or);}
+.tc{display:none;}.tc.active{display:block;}
+.sec{background:#F8F8F8;color:var(--text2);padding:7px 14px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+.sec-or{background:var(--or);color:#fff;padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.sec-green{background:var(--green-bg);color:var(--green);padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+.row{padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;}
+.row:last-child{border-bottom:none;}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
+.cat-hdr{padding:10px 14px;background:var(--or-bg);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
+.cat-body{display:none;}.cat-body.open{display:block;}
+.rec-item{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;}
+.rec-item.sel{background:var(--green-bg);}
+.chk{width:22px;height:22px;border-radius:6px;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;cursor:pointer;transition:all .15s;background:#fff;}
+.chk.on{background:var(--or);border-color:var(--or);color:#fff;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:360px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.12);}
+.colab-opt{padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;cursor:pointer;transition:background .1s;}
+.colab-opt.on{background:var(--or-bg);}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--bd);flex-shrink:0;transition:all .15s;}
+.radio.on{background:var(--or);border-color:var(--or);}
+.btn-ok{width:100%;padding:14px;background:var(--or);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- Modal asignar -->
+<div class="modal-bg" id="m-asignar">
+  <div class="modal">
+    <div style="background:var(--or);padding:14px 16px;">
+      <div style="font-size:14px;font-weight:700;color:#fff;" id="ma-titulo">—</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;" id="ma-sub">—</div>
+    </div>
+    <div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;">¿A quién asignas esta receta?</div>
+    <div id="ma-colabs"></div>
+    <div style="padding:10px 14px;border-top:1px solid var(--bd);">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;">Unidades a producir</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="ajustarCant(-10)" style="width:34px;height:34px;border:1.5px solid var(--bd);border-radius:8px;font-size:18px;cursor:pointer;background:#fff;color:var(--text2);">−</button>
+        <input type="number" id="ma-cant" style="width:70px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:8px;font-size:16px;font-weight:700;color:var(--or);text-align:center;" value="20" min="1">
+        <button onclick="ajustarCant(10)" style="width:34px;height:34px;border:1.5px solid var(--bd);border-radius:8px;font-size:18px;cursor:pointer;background:#fff;color:var(--text2);">+</button>
+        <span style="font-size:12px;color:var(--text2);">unidades</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:10px 14px;">
+      <button onclick="cerrarModal()" style="flex:1;padding:12px;background:#F0F0F0;color:var(--text2);border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;">Cancelar</button>
+      <button id="ma-btn" onclick="confirmarAsignar()" style="flex:2;padding:12px;background:#EEE;color:#BBB;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:not-allowed;">Asignar</button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="topbar">
+    <div>
+      <div class="logo">Panecito</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px;" id="fecha-top">lunes, 23 de marzo</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+      <div class="tag">Gerencia</div>
+      <div style="font-size:10px;color:var(--text2);">Panecito</div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nb active" id="nb-hoy" onclick="showT(&#39;hoy&#39;,this)">Hoy</button>
+    <button class="nb" id="nb-asignar" onclick="showT(&#39;asignar&#39;,this)">Asignar</button>
+    <button class="nb" id="nb-inv" onclick="showT(&#39;inv&#39;,this)">Inventario</button>
+    <button class="nb" id="nb-rep" onclick="showT(&#39;rep&#39;,this)">Reportes</button>
+  </div>
+
+  <!-- HOY -->
+  <div id="t-hoy" class="tc active">
+    <div class="sec">Estado del equipo</div>
+    <div id="hoy-equipo"><div class="row"><div class="av" style="width:36px;height:36px;font-size:13px;background:#FEF6F2;color:#C05A20;">BR</div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:700;color:var(--text);">Brenda</span><div style="width:7px;height:7px;border-radius:50%;background:#CCC;"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px;">Sin recetas asignadas</div></div><span style="font-size:11px;font-weight:700;color:var(--text2);">—</span></div><div class="row"><div class="av" style="width:36px;height:36px;font-size:13px;background:#F0F9F2;color:#2E7D42;">MA</div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:700;color:var(--text);">Mayra</span><div style="width:7px;height:7px;border-radius:50%;background:#CCC;"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px;">Sin recetas asignadas</div></div><span style="font-size:11px;font-weight:700;color:var(--text2);">—</span></div><div class="row"><div class="av" style="width:36px;height:36px;font-size:13px;background:#EEF4FB;color:#2A5F8F;">TM</div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:700;color:var(--text);">Titis M.</span><div style="width:7px;height:7px;border-radius:50%;background:#CCC;"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px;">Sin recetas asignadas</div></div><span style="font-size:11px;font-weight:700;color:var(--text2);">—</span></div><div class="row"><div class="av" style="width:36px;height:36px;font-size:13px;background:#FDF0F0;color:#C03030;">YA</div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:700;color:var(--text);">Yanet</span><div style="width:7px;height:7px;border-radius:50%;background:#CCC;"></div></div><div style="font-size:11px;color:var(--text2);margin-top:2px;">Sin recetas asignadas</div></div><span style="font-size:11px;font-weight:700;color:var(--text2);">—</span></div></div>
+    <div class="sec" style="margin-top:1px;">Producción asignada hoy</div>
+    <div id="hoy-prod"><div style="padding:14px;text-align:center;color:var(--text2);font-size:13px;line-height:1.6;">Sin recetas asignadas.<br>Ve a <strong>Asignar</strong> para planificar el día.</div></div>
+    <div class="sec" style="margin-top:1px;">Alertas</div>
+    <div id="hoy-alertas"><div style="padding:14px;text-align:center;color:var(--text2);font-size:13px;">Sin alertas ✅</div></div>
+  </div>
+
+  <!-- ASIGNAR -->
+  <div id="t-asignar" class="tc">
+    <div class="sec-or">Planificar producción de hoy</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--bd);">Toca una receta para asignarla a una colaboradora.</div>
+    <div id="asig-hdr" style="display:none;">
+      <div class="sec-green">Ya asignadas hoy</div>
+      <div id="asig-list"></div>
+    </div>
+    <div class="sec" style="margin-top:1px;">Catálogo de recetas</div>
+    <div id="cat-list"><div id="cat-wrap-0"><div class="cat-hdr" onclick="toggleCat(0)"><span style="font-size:13px;font-weight:700;color:var(--text);">Sandwich</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-0"><div class="rec-item" onclick="abrirAsignar(0,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Sandwich Clasico</div><div style="font-size:11px;color:var(--text2);">20 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(0,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Sandwich Integral</div><div style="font-size:11px;color:var(--text2);">20 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(0,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Sandwich con Costra</div><div style="font-size:11px;color:var(--text2);">16 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-1"><div class="cat-hdr" onclick="toggleCat(1)"><span style="font-size:13px;font-weight:700;color:var(--text);">Mi Sandwichito</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-1"><div class="rec-item" onclick="abrirAsignar(1,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Sandwichito Clasico</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(1,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Sandwichito Costra de Queso</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-2"><div class="cat-hdr" onclick="toggleCat(2)"><span style="font-size:13px;font-weight:700;color:var(--text);">Hamburguesa</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-2"><div class="rec-item" onclick="abrirAsignar(2,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Hamburguesa Clasica</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(2,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Hamburguesa Pesto</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-3"><div class="cat-hdr" onclick="toggleCat(3)"><span style="font-size:13px;font-weight:700;color:var(--text);">Bollitos</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-3"><div class="rec-item" onclick="abrirAsignar(3,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Bollito Clasico</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(3,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Bollito Integral</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-4"><div class="cat-hdr" onclick="toggleCat(4)"><span style="font-size:13px;font-weight:700;color:var(--text);">Ciabatta y especiales</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-4"><div class="rec-item" onclick="abrirAsignar(4,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Ciabatta Mini</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(4,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Panini</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(4,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pan Campesino</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(4,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Hot Dog</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(4,4)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pan Frances</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(4,5)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pan Pirujo</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-5"><div class="cat-hdr" onclick="toggleCat(5)"><span style="font-size:13px;font-weight:700;color:var(--text);">Tostaditas</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-5"><div class="rec-item" onclick="abrirAsignar(5,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tostaditas Clasicas</div><div style="font-size:11px;color:var(--text2);">30 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(5,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tostaditas Ajo</div><div style="font-size:11px;color:var(--text2);">30 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(5,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tostaditas Oregano</div><div style="font-size:11px;color:var(--text2);">30 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(5,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tostaditas Sal Marina</div><div style="font-size:11px;color:var(--text2);">30 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-6"><div class="cat-hdr" onclick="toggleCat(6)"><span style="font-size:13px;font-weight:700;color:var(--text);">Pizzas</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-6"><div class="rec-item" onclick="abrirAsignar(6,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pizza Margarita</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(6,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pizza Pepperoni</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(6,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pizza 3 Quesos</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(6,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pizza Veggie</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(6,4)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pizza Pollo</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(6,5)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pizza Mini</div><div style="font-size:11px;color:var(--text2);">20 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-7"><div class="cat-hdr" onclick="toggleCat(7)"><span style="font-size:13px;font-weight:700;color:var(--text);">Pan dulce</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-7"><div class="rec-item" onclick="abrirAsignar(7,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pan de Feria</div><div style="font-size:11px;color:var(--text2);">20 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-8"><div class="cat-hdr" onclick="toggleCat(8)"><span style="font-size:13px;font-weight:700;color:var(--text);">Quiche, Empanada y Tamales</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-8"><div class="rec-item" onclick="abrirAsignar(8,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Quiche Tocino y Champinon</div><div style="font-size:11px;color:var(--text2);">8 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(8,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Quiche Espinaca</div><div style="font-size:11px;color:var(--text2);">8 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(8,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Empanada de Pollo</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(8,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Empanada de Res</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(8,4)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tamales</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-9"><div class="cat-hdr" onclick="toggleCat(9)"><span style="font-size:13px;font-weight:700;color:var(--text);">Waffle y Paliwaffles</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-9"><div class="rec-item" onclick="abrirAsignar(9,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Waffle Chocolate</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(9,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Waffle Vainilla</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(9,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Waffle Doble Chocolate</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(9,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Paliwaffle</div><div style="font-size:11px;color:var(--text2);">20 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-10"><div class="cat-hdr" onclick="toggleCat(10)"><span style="font-size:13px;font-weight:700;color:var(--text);">Pasteles</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-10"><div class="rec-item" onclick="abrirAsignar(10,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tartaleta de Manzana</div><div style="font-size:11px;color:var(--text2);">6 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Tartaleta Frutos Rojos</div><div style="font-size:11px;color:var(--text2);">6 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pastel de Chocolate</div><div style="font-size:11px;color:var(--text2);">4 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pastel de Vainilla</div><div style="font-size:11px;color:var(--text2);">4 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,4)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Magdalena de Vainilla</div><div style="font-size:11px;color:var(--text2);">8 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,5)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Cheesecake</div><div style="font-size:11px;color:var(--text2);">6 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,6)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Brownie</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(10,7)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Pastel de Zanahoria</div><div style="font-size:11px;color:var(--text2);">4 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-11"><div class="cat-hdr" onclick="toggleCat(11)"><span style="font-size:13px;font-weight:700;color:var(--text);">Loaf y Quesadilla</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-11"><div class="rec-item" onclick="abrirAsignar(11,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Loaf de Chocolate</div><div style="font-size:11px;color:var(--text2);">3 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(11,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Loaf de Vainilla</div><div style="font-size:11px;color:var(--text2);">3 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(11,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Loaf de Limon</div><div style="font-size:11px;color:var(--text2);">3 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(11,3)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Quesadilla</div><div style="font-size:11px;color:var(--text2);">6 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(11,4)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Loaf de Platano</div><div style="font-size:11px;color:var(--text2);">3 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-12"><div class="cat-hdr" onclick="toggleCat(12)"><span style="font-size:13px;font-weight:700;color:var(--text);">Galletas</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-12"><div class="rec-item" onclick="abrirAsignar(12,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Galleta de Canela</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(12,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Galleta de Chocolate</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-13"><div class="cat-hdr" onclick="toggleCat(13)"><span style="font-size:13px;font-weight:700;color:var(--text);">Crepas</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-13"><div class="rec-item" onclick="abrirAsignar(13,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Crepa Queso y Berries</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(13,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Crepa Nutella</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(13,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Crepa Salada</div><div style="font-size:11px;color:var(--text2);">12 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-14"><div class="cat-hdr" onclick="toggleCat(14)"><span style="font-size:13px;font-weight:700;color:var(--text);">Conos, Sorbette y Gelatos</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-14"><div class="rec-item" onclick="abrirAsignar(14,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Cono Waffle</div><div style="font-size:11px;color:var(--text2);">24 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(14,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Sorbette</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(14,2)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Gelato</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div><div id="cat-wrap-15"><div class="cat-hdr" onclick="toggleCat(15)"><span style="font-size:13px;font-weight:700;color:var(--text);">Producto de temporada</span><span style="font-size:11px;color:var(--text2);">▼</span></div><div class="cat-body" id="cat-body-15"><div class="rec-item" onclick="abrirAsignar(15,0)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Producto Temporada 1</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div><div class="rec-item" onclick="abrirAsignar(15,1)"><div class="chk"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Producto Temporada 2</div><div style="font-size:11px;color:var(--text2);">10 u por defecto</div></div><span style="font-size:12px;color:#CCC;">›</span></div></div></div></div>
+  </div>
+
+  <!-- INVENTARIO -->
+  <div id="t-inv" class="tc">
+    <div class="sec-or">Inventario — stock del mostrador</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--bd);line-height:1.5;">Sube el Excel de Virtual Books. Toca ✕ para ocultar una receta de las tablets.</div>
+    <div style="margin:12px 14px;">
+      <label style="display:block;padding:18px 14px;background:var(--or-bg);border:2px dashed var(--or2);border-radius:12px;text-align:center;cursor:pointer;">
+        <div style="font-size:28px;margin-bottom:6px;">📂</div>
+        <div style="font-size:14px;font-weight:700;color:var(--or);">Subir Excel de Virtual Books</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;">Archivo .xlsx exportado del inventario</div>
+        <input type="file" id="inv-file" accept=".xlsx,.xls,.csv" style="display:none;" onchange="cargarInventario(this)">
+      </label>
+    </div>
+    <div id="inv-ok" style="display:none;margin:0 14px 8px;padding:10px 12px;background:var(--green-bg);border-radius:10px;border:1px solid var(--green);">
+      <div style="font-size:12px;font-weight:700;color:var(--green);" id="inv-ok-txt">—</div>
+    </div>
+    <div style="margin:0 14px 10px;padding:10px 12px;background:#F8F8F8;border-radius:10px;border:1px solid var(--bd);">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">Umbral de stock bajo (unidades)</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <input type="number" id="umbral-inp" value="10" min="1" style="width:70px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:8px;font-size:14px;text-align:center;" oninput="aplicarUmbral()">
+        <span style="font-size:12px;color:var(--text2);">alerta cuando quede menos de esto</span>
+      </div>
+    </div>
+    <div class="sec" style="margin-top:4px;">Productos con stock bajo</div>
+    <div id="inv-bajo"><div style="padding:14px;text-align:center;color:var(--text2);font-size:13px;">Sube el Excel para ver el stock.</div></div>
+  </div>
+
+  <!-- REPORTES -->
+  <div id="t-rep" class="tc">
+    <div class="sec">Resumen del día</div>
+    <div style="display:flex;border-bottom:1px solid var(--bd);">
+      <div style="flex:1;padding:14px;text-align:center;border-right:1px solid var(--bd);">
+        <div style="font-size:26px;font-weight:700;color:var(--or);" id="rep-lotes">0</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px;">Lotes</div>
+      </div>
+      <div style="flex:1;padding:14px;text-align:center;border-right:1px solid var(--bd);">
+        <div style="font-size:26px;font-weight:700;color:var(--green);" id="rep-u">—</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px;">Al mostrador</div>
+      </div>
+      <div style="flex:1;padding:14px;text-align:center;">
+        <div style="font-size:26px;font-weight:700;color:var(--red);" id="rep-m">—</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px;">Merma prom.</div>
+      </div>
+    </div>
+    <div class="sec" style="margin-top:1px;">Por colaboradora</div>
+    <div id="rep-colabs"></div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════
+var GER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxamQVIzjXc_WkAPkxww50esXLTpH1KDAuUrg5M2iJoMkuyqp4_aYOXeX-hDjtYH3Bc/exec';
+
+// ════════════════════════════════════════
+// DATOS
+// ════════════════════════════════════════
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzX4Cyfu5w0UUSlcYFtu7gTWXd5n-plWWUo6H_dVl1UtlL1dKv_IH-lGycngn1tuyFm/exec';
+
+var EQUIPO = [
+  {id:'BRENDA',   n:'Brenda',   i:'BR', bg:'#FEF6F2', fc:'#C05A20'},
+  {id:'MAYRA',    n:'Mayra',    i:'MA', bg:'#F0F9F2', fc:'#2E7D42'},
+  {id:'TITIS',    n:'Titis M.', i:'TM', bg:'#EEF4FB', fc:'#2A5F8F'},
+  {id:'YANET',    n:'Yanet',    i:'YA', bg:'#FDF0F0', fc:'#C03030'}
+];
+
+var CATS = [
+  {t:'Sandwich', items:[
+    {id:'PA001',n:'Sandwich Clasico',u:20},
+    {id:'PA002',n:'Sandwich Integral',u:20},
+    {id:'PA003',n:'Sandwich con Costra',u:16}
+  ]},
+  {t:'Mi Sandwichito', items:[
+    {id:'PA004',n:'Sandwichito Clasico',u:24},
+    {id:'PA005',n:'Sandwichito Costra de Queso',u:24}
+  ]},
+  {t:'Hamburguesa', items:[
+    {id:'PA007',n:'Hamburguesa Clasica',u:12},
+    {id:'PA008',n:'Hamburguesa Pesto',u:12}
+  ]},
+  {t:'Bollitos', items:[
+    {id:'PA009',n:'Bollito Clasico',u:24},
+    {id:'PA010',n:'Bollito Integral',u:24}
+  ]},
+  {t:'Ciabatta y especiales', items:[
+    {id:'PA011',n:'Ciabatta Mini',u:12},
+    {id:'PA012',n:'Panini',u:12},
+    {id:'PA013',n:'Pan Campesino',u:10},
+    {id:'PA014',n:'Hot Dog',u:12},
+    {id:'PA015',n:'Pan Frances',u:10},
+    {id:'PA016',n:'Pan Pirujo',u:10}
+  ]},
+  {t:'Tostaditas', items:[
+    {id:'PA017',n:'Tostaditas Clasicas',u:30},
+    {id:'PA018',n:'Tostaditas Ajo',u:30},
+    {id:'PA019',n:'Tostaditas Oregano',u:30},
+    {id:'PA020',n:'Tostaditas Sal Marina',u:30}
+  ]},
+  {t:'Pizzas', items:[
+    {id:'PA021',n:'Pizza Margarita',u:10},
+    {id:'PA022',n:'Pizza Pepperoni',u:10},
+    {id:'PA023',n:'Pizza 3 Quesos',u:10},
+    {id:'PA024',n:'Pizza Veggie',u:10},
+    {id:'PA025',n:'Pizza Pollo',u:10},
+    {id:'PA026',n:'Pizza Mini',u:20}
+  ]},
+  {t:'Pan dulce', items:[
+    {id:'PA027',n:'Pan de Feria',u:20}
+  ]},
+  {t:'Quiche, Empanada y Tamales', items:[
+    {id:'PA028',n:'Quiche Tocino y Champinon',u:8},
+    {id:'PA029',n:'Quiche Espinaca',u:8},
+    {id:'PA030',n:'Empanada de Pollo',u:12},
+    {id:'PA031',n:'Empanada de Res',u:12},
+    {id:'PA032',n:'Tamales',u:12}
+  ]},
+  {t:'Waffle y Paliwaffles', items:[
+    {id:'PA033',n:'Waffle Chocolate',u:10},
+    {id:'PA034',n:'Waffle Vainilla',u:10},
+    {id:'PA035',n:'Waffle Doble Chocolate',u:10},
+    {id:'PA036',n:'Paliwaffle',u:20}
+  ]},
+  {t:'Pasteles', items:[
+    {id:'RE001',n:'Tartaleta de Manzana',u:6},
+    {id:'RE002',n:'Tartaleta Frutos Rojos',u:6},
+    {id:'RE003',n:'Pastel de Chocolate',u:4},
+    {id:'RE004',n:'Pastel de Vainilla',u:4},
+    {id:'RE005',n:'Magdalena de Vainilla',u:8},
+    {id:'RE006',n:'Cheesecake',u:6},
+    {id:'RE007',n:'Brownie',u:12},
+    {id:'RE008',n:'Pastel de Zanahoria',u:4}
+  ]},
+  {t:'Loaf y Quesadilla', items:[
+    {id:'RE009',n:'Loaf de Chocolate',u:3},
+    {id:'RE010',n:'Loaf de Vainilla',u:3},
+    {id:'RE011',n:'Loaf de Limon',u:3},
+    {id:'RE012',n:'Quesadilla',u:6},
+    {id:'RE013',n:'Loaf de Platano',u:3}
+  ]},
+  {t:'Galletas', items:[
+    {id:'RE014',n:'Galleta de Canela',u:24},
+    {id:'RE015',n:'Galleta de Chocolate',u:24}
+  ]},
+  {t:'Crepas', items:[
+    {id:'RE016',n:'Crepa Queso y Berries',u:12},
+    {id:'RE017',n:'Crepa Nutella',u:12},
+    {id:'RE018',n:'Crepa Salada',u:12}
+  ]},
+  {t:'Conos, Sorbette y Gelatos', items:[
+    {id:'RE019',n:'Cono Waffle',u:24},
+    {id:'RE020',n:'Sorbette',u:10},
+    {id:'RE021',n:'Gelato',u:10}
+  ]},
+  {t:'Producto de temporada', items:[
+    {id:'RE022',n:'Producto Temporada 1',u:10},
+    {id:'RE023',n:'Producto Temporada 2',u:10}
+  ]}
+];
+
+// ════════════════════════════════════════
+// ESTADO
+// ════════════════════════════════════════
+var ASIGNADAS = [];
+var SCRIPT_URL_GER = 'https://script.google.com/macros/s/AKfycbzX4Cyfu5w0UUSlcYFtu7gTWXd5n-plWWUo6H_dVl1UtlL1dKv_IH-lGycngn1tuyFm/exec';
+
+function guardarAsignacionSheet(recNombre, colabId, u) {
+  var col = null;
+  for (var i = 0; i < EQUIPO.length; i++) {
+    if (EQUIPO[i].id === colabId) { col = EQUIPO[i]; break; }
+  }
+  var fecha = new Date().toLocaleDateString('es-GT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  var hora = new Date().toLocaleTimeString('es-GT',{hour:'2-digit',minute:'2-digit'});
+  fetch(SCRIPT_URL_GER, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      tipo: 'asignacion',
+      fecha: fecha,
+      hora: hora,
+      receta: recNombre,
+      colaboradora: colabId,
+      unidades: u
+    })
+  }).then(function(){ toast('✅ Guardado en Sheet'); })
+    .catch(function(){ toast('⚠️ Sin conexión — guardado local'); });
+}
+var INVENTARIO = [];
+var catOpen = {};
+var selColabId = null;
+var selRecId = null;
+var selRecN = null;
+var selRecU = 20;
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+var NOW = new Date();
+document.getElementById('fecha-top').textContent = NOW.toLocaleDateString('es-GT',{weekday:'long',day:'numeric',month:'long'});
+renderHoy();
+renderAsig();
+renderCat();
+
+// ════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════
+function showT(t, btn) {
+  var tabs = ['t-hoy','t-asignar','t-inv','t-rep'];
+  for (var ti = 0; ti < tabs.length; ti++) {
+    document.getElementById(tabs[ti]).classList.remove('active');
+  }
+  var nbs = document.querySelectorAll('.nb');
+  for (var ni = 0; ni < nbs.length; ni++) nbs[ni].classList.remove('active');
+  document.getElementById('t-' + t).classList.add('active');
+  btn.classList.add('active');
+  if (t === 'rep') renderRep();
+}
+
+// ════════════════════════════════════════
+// TAB HOY
+// ════════════════════════════════════════
+function renderHoy() {
+  var el = document.getElementById('hoy-equipo');
+  if (!el) return;
+  var html = '';
+  for (var ei = 0; ei < EQUIPO.length; ei++) {
+    var eq = EQUIPO[ei];
+    var misRec = [];
+    for (var ai = 0; ai < ASIGNADAS.length; ai++) {
+      if (ASIGNADAS[ai].colab === eq.id) misRec.push(ASIGNADAS[ai].recN);
+    }
+    var dot = misRec.length > 0 ? 'var(--green)' : '#CCC';
+    var sub = misRec.length > 0 ? misRec.join(', ') : 'Sin recetas asignadas';
+    html += '<div class="row">'
+      + '<div class="av" style="width:36px;height:36px;font-size:13px;background:' + eq.bg + ';color:' + eq.fc + ';">' + eq.i + '</div>'
+      + '<div style="flex:1;">'
+      + '<div style="display:flex;align-items:center;gap:6px;">'
+      + '<span style="font-size:13px;font-weight:700;color:var(--text);">' + eq.n + '</span>'
+      + '<div style="width:7px;height:7px;border-radius:50%;background:' + dot + ';"></div>'
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--text2);margin-top:2px;">' + sub + '</div>'
+      + '</div>'
+      + '<span style="font-size:11px;font-weight:700;color:' + (misRec.length > 0 ? 'var(--green)' : 'var(--text2)') + ';">'
+      + (misRec.length > 0 ? misRec.length + ' rec.' : '—') + '</span>'
+      + '</div>';
+  }
+  el.innerHTML = html;
+
+  var pd = document.getElementById('hoy-prod');
+  if (!pd) return;
+  if (ASIGNADAS.length === 0) {
+    pd.innerHTML = '<div style="padding:14px;text-align:center;color:var(--text2);font-size:13px;line-height:1.6;">Sin recetas asignadas.<br>Ve a <strong>Asignar</strong> para planificar el día.</div>';
+  } else {
+    var h = '';
+    for (var pi = 0; pi < ASIGNADAS.length; pi++) {
+      var a = ASIGNADAS[pi];
+      var col = null;
+      for (var qi = 0; qi < EQUIPO.length; qi++) {
+        if (EQUIPO[qi].id === a.colab) { col = EQUIPO[qi]; break; }
+      }
+      h += '<div class="row">'
+        + '<div class="av" style="width:30px;height:30px;font-size:10px;background:' + (col ? col.bg : '#eee') + ';color:' + (col ? col.fc : '#999') + ';">' + (col ? col.i : '?') + '</div>'
+        + '<div style="flex:1;">'
+        + '<div style="font-size:13px;font-weight:700;color:var(--text);">' + a.recN + '</div>'
+        + '<div style="font-size:11px;color:var(--text2);">' + (col ? col.n : '?') + ' · ' + a.u + ' u</div>'
+        + '</div>'
+        + '<span style="font-size:11px;font-weight:700;color:var(--text2);">⏳ Pendiente</span>'
+        + '</div>';
+    }
+    pd.innerHTML = h;
+  }
+}
+
+// ════════════════════════════════════════
+// TAB ASIGNAR
+// ════════════════════════════════════════
+function renderAsig() {
+  var sec = document.getElementById('asig-hdr');
+  var list = document.getElementById('asig-list');
+  if (!sec || !list) return;
+  if (ASIGNADAS.length === 0) {
+    sec.style.display = 'none';
+  } else {
+    sec.style.display = 'block';
+    var h = '';
+    for (var ai = 0; ai < ASIGNADAS.length; ai++) {
+      var a = ASIGNADAS[ai];
+      var col = null;
+      for (var ci = 0; ci < EQUIPO.length; ci++) {
+        if (EQUIPO[ci].id === a.colab) { col = EQUIPO[ci]; break; }
+      }
+      h += '<div class="row">'
+        + '<div class="av" style="width:30px;height:30px;font-size:10px;background:' + (col ? col.bg : '#eee') + ';color:' + (col ? col.fc : '#999') + ';">' + (col ? col.i : '?') + '</div>'
+        + '<div style="flex:1;">'
+        + '<div style="font-size:13px;font-weight:700;color:var(--text);">' + a.recN + '</div>'
+        + '<div style="font-size:11px;color:var(--text2);">' + (col ? col.n : '?') + ' · ' + a.u + ' u</div>'
+        + '</div>'
+        + '<button onclick="quitarAsig(' + ai + ')" style="font-size:11px;color:var(--red);background:var(--red-bg);border:none;padding:4px 8px;border-radius:7px;cursor:pointer;">✕ Quitar</button>'
+        + '</div>';
+    }
+    list.innerHTML = h;
+  }
+}
+
+function renderCat() {
+  var list = document.getElementById('cat-list');
+  if (!list) return;
+  var html = '';
+  for (var ci = 0; ci < CATS.length; ci++) {
+    var cat = CATS[ci];
+    var isOpen = catOpen[ci] ? true : false;
+    html += '<div id="cat-wrap-' + ci + '">'
+      + '<div class="cat-hdr" onclick="toggleCat(' + ci + ')">'
+      + '<span style="font-size:13px;font-weight:700;color:var(--text);">' + cat.t + '</span>'
+      + '<span style="font-size:11px;color:var(--text2);">' + (isOpen ? '▲' : '▼') + '</span>'
+      + '</div>'
+      + '<div class="cat-body' + (isOpen ? ' open' : '') + '" id="cat-body-' + ci + '">';
+    for (var ri = 0; ri < cat.items.length; ri++) {
+      var r = cat.items[ri];
+      var asig = estaAsig(r.id);
+      html += '<div class="rec-item' + (asig ? ' sel' : '') + '" onclick="abrirAsignar(' + ci + ',' + ri + ')">'
+        + '<div class="chk' + (asig ? ' on' : '') + '">' + (asig ? '✓' : '') + '</div>'
+        + '<div style="flex:1;">'
+        + '<div style="font-size:13px;font-weight:600;color:var(--text);">' + r.n + '</div>'
+        + '<div style="font-size:11px;color:var(--text2);">' + r.u + ' u por defecto</div>'
+        + '</div>'
+        + (asig ? '<span style="font-size:10px;font-weight:700;color:var(--green);">✅</span>' : '<span style="font-size:12px;color:#CCC;">›</span>')
+        + '</div>';
+    }
+    html += '</div></div>';
+  }
+  list.innerHTML = html;
+}
+
+function toggleCat(ci) {
+  catOpen[ci] = !catOpen[ci];
+  renderCat();
+}
+
+function estaAsig(id) {
+  for (var i = 0; i < ASIGNADAS.length; i++) {
+    if (ASIGNADAS[i].recId === id) return true;
+  }
+  return false;
+}
+
+function quitarAsig(idx) {
+  ASIGNADAS.splice(idx, 1);
+  renderAsig();
+  renderCat();
+  toast('Receta quitada del plan');
+}
+
+// ════════════════════════════════════════
+// MODAL ASIGNAR
+// ════════════════════════════════════════
+function abrirAsignar(ci, ri) {
+  var r = CATS[ci].items[ri];
+  if (estaAsig(r.id)) { toast('Esta receta ya está asignada'); return; }
+  selRecId = r.id;
+  selRecN = r.n;
+  selRecU = r.u;
+  selColabId = null;
+  var tit = document.getElementById('ma-titulo');
+  var sub = document.getElementById('ma-sub');
+  var cant = document.getElementById('ma-cant');
+  var btn = document.getElementById('ma-btn');
+  if (tit) tit.textContent = r.n;
+  if (sub) sub.textContent = r.u + ' unidades por defecto';
+  if (cant) cant.value = r.u;
+  if (btn) { btn.style.background = '#EEE'; btn.style.color = '#BBB'; btn.style.cursor = 'not-allowed'; }
+  var html = '';
+  for (var ei = 0; ei < EQUIPO.length; ei++) {
+    var eq = EQUIPO[ei];
+    var misRec = 0;
+    for (var ai = 0; ai < ASIGNADAS.length; ai++) {
+      if (ASIGNADAS[ai].colab === eq.id) misRec++;
+    }
+    html += '<div class="colab-opt" id="mco-' + eq.id + '" onclick="pickColab(this.dataset.id)" data-id="' + eq.id + '">'
+      + '<div class="av" style="width:34px;height:34px;font-size:12px;background:' + eq.bg + ';color:' + eq.fc + ';">' + eq.i + '</div>'
+      + '<div style="flex:1;">'
+      + '<div style="font-size:13px;font-weight:700;color:var(--text);">' + eq.n + '</div>'
+      + '<div style="font-size:11px;color:var(--text2);">' + (misRec > 0 ? misRec + ' receta' + (misRec > 1 ? 's' : '') + ' asignada' + (misRec > 1 ? 's' : '') : 'Disponible') + '</div>'
+      + '</div>'
+      + '<div class="radio" id="mcr-' + eq.id + '"></div>'
+      + '</div>';
+  }
+  var colabs = document.getElementById('ma-colabs');
+  if (colabs) colabs.innerHTML = html;
+  document.getElementById('m-asignar').classList.add('show');
+}
+
+function pickColab(elOrId) {
+  var id = (typeof elOrId === 'string') ? elOrId : elOrId.dataset.id;
+  selColabId = id;
+  for (var ei = 0; ei < EQUIPO.length; ei++) {
+    var eq = EQUIPO[ei];
+    var el = document.getElementById('mco-' + eq.id);
+    var r = document.getElementById('mcr-' + eq.id);
+    if (el) el.classList.toggle('on', eq.id === id);
+    if (r) r.classList.toggle('on', eq.id === id);
+  }
+  var btn = document.getElementById('ma-btn');
+  if (btn) { btn.style.background = 'var(--or)'; btn.style.color = '#fff'; btn.style.cursor = 'pointer'; }
+}
+
+function ajustarCant(d) {
+  var inp = document.getElementById('ma-cant');
+  if (inp) inp.value = Math.max(1, (parseInt(inp.value) || 0) + d);
+}
+
+function confirmarAsignar() {
+  if (!selColabId || !selRecId) return;
+  var inp = document.getElementById('ma-cant');
+  var u = parseInt(inp ? inp.value : selRecU) || selRecU;
+  ASIGNADAS.push({recId:selRecId, recN:selRecN, colab:selColabId, u:u});
+  // Guardar en Sheet para que llegue a la tablet
+  var colNombreSheet = '';
+  for (var si = 0; si < EQUIPO.length; si++) {
+    if (EQUIPO[si].id === selColabId) { colNombreSheet = EQUIPO[si].id; break; }
+  }
+  guardarAsignacionSheet(selRecN, colNombreSheet, u);
+  guardarAsignacionSheet(selRecN, selColabId, u);
+  guardarAsignacionSheet(selRecN, selColabId, u);
+  cerrarModal();
+  renderAsig();
+  renderCat();
+  renderHoy();
+  var colN = '';
+  for (var ei = 0; ei < EQUIPO.length; ei++) {
+    if (EQUIPO[ei].id === selColabId) { colN = EQUIPO[ei].n; break; }
+  }
+  // Guardar en Sheet
+  var fecha = new Date().toLocaleDateString('es-GT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  fetch(SCRIPT_URL, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({tipo:'asignacion', fecha:fecha, receta:selRecN, colaboradora:selColabId, unidades:u})
+  }).catch(function(){});
+  toast('Asignado: ' + selRecN + ' a ' + colN);
+}
+
+function cerrarModal() {
+  document.getElementById('m-asignar').classList.remove('show');
+}
+
+// ════════════════════════════════════════
+// INVENTARIO
+// ════════════════════════════════════════
+function cargarInventario(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var data = new Uint8Array(ev.target.result);
+      var wb = XLSX.read(data, {type:'array'});
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+      var prods = [];
+      for (var ri = 0; ri < rows.length; ri++) {
+        var row = rows[ri];
+        var cod = String(row[0] || '').trim();
+        var nom = String(row[1] || '').trim();
+        var exist = parseFloat(row[4]) || 0;
+        if (!cod || !nom || nom.length < 2) continue;
+        if (cod === 'Codigo' || cod === 'Código') continue;
+        if (!isNaN(Number(cod))) continue;
+        if (cod.length < 2) continue;
+        if (!/[A-Za-z]/.test(cod)) continue;
+        prods.push({cod:cod, nom:nom, exist:exist, umbral:10, oculto:false});
+      }
+      if (prods.length === 0) { toast('No se leyeron productos'); return; }
+      INVENTARIO = prods;
+      mostrarBajos();
+      var ok = document.getElementById('inv-ok');
+      var txt = document.getElementById('inv-ok-txt');
+      if (ok) ok.style.display = 'block';
+      if (txt) txt.textContent = prods.length + ' productos cargados correctamente';
+      toast(prods.length + ' productos cargados');
+    } catch(err) {
+      toast('Error: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function aplicarUmbral() {
+  var inp = document.getElementById('umbral-inp');
+  var u = parseInt(inp ? inp.value : 10) || 10;
+  for (var i = 0; i < INVENTARIO.length; i++) INVENTARIO[i].umbral = u;
+  if (INVENTARIO.length > 0) mostrarBajos();
+}
+
+function mostrarBajos() {
+  var list = document.getElementById('inv-bajo');
+  if (!list) return;
+  var vis = [], ocu = [];
+  for (var i = 0; i < INVENTARIO.length; i++) {
+    if (INVENTARIO[i].exist <= INVENTARIO[i].umbral) {
+      if (INVENTARIO[i].oculto) ocu.push(INVENTARIO[i]);
+      else vis.push(INVENTARIO[i]);
+    }
+  }
+  if (vis.length === 0 && ocu.length === 0) {
+    list.innerHTML = '<div style="padding:14px;text-align:center;color:var(--green);font-size:13px;font-weight:700;">Todo el stock esta bien</div>';
+    return;
+  }
+  var html = '<div style="padding:7px 14px;font-size:11px;color:var(--text2);background:#FAFAFA;border-bottom:1px solid var(--bd);">'
+    + vis.length + ' visibles en tablets · ' + ocu.length + ' ocultas · Toca X para ocultar</div>';
+  for (var vi = 0; vi < vis.length; vi++) {
+    var p = vis[vi];
+    var col2 = p.exist === 0 ? 'var(--red)' : 'var(--amber)';
+    var bg2 = p.exist === 0 ? 'var(--red-bg)' : 'var(--amber-bg)';
+    var lbl = p.exist === 0 ? 'Sin stock' : 'Stock bajo';
+    html += '<div style="padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;">'
+      + '<div style="flex:1;">'
+      + '<div style="font-size:13px;font-weight:700;color:var(--text);">' + p.nom + '</div>'
+      + '<div style="font-size:10px;color:var(--text2);">' + p.cod + '</div></div>'
+      + '<span style="font-size:13px;font-weight:700;color:' + col2 + ';">' + p.exist + '</span>'
+      + '<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;background:' + bg2 + ';color:' + col2 + ';">' + lbl + '</span>'
+      + '<button onclick="ocultarProd(' + vi + ')" style="width:26px;height:26px;border-radius:50%;background:var(--red-bg);border:none;color:var(--red);font-size:13px;font-weight:700;cursor:pointer;">X</button>'
+      + '</div>';
+  }
+  if (ocu.length > 0) {
+    html += '<div style="padding:7px 14px;font-size:10px;font-weight:700;color:var(--text2);background:#F8F8F8;border-bottom:1px solid var(--bd);text-transform:uppercase;">Ocultas de las tablets</div>';
+    for (var oi = 0; oi < ocu.length; oi++) {
+      var p2 = ocu[oi];
+      html += '<div style="padding:9px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;opacity:.65;">'
+        + '<div style="flex:1;">'
+        + '<div style="font-size:12px;font-weight:600;color:var(--text2);text-decoration:line-through;">' + p2.nom + '</div>'
+        + '<div style="font-size:10px;color:var(--text2);">' + p2.cod + '</div></div>'
+        + '<button onclick="mostrarProd(' + oi + ')" style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;background:var(--green-bg);border:1px solid var(--green);color:var(--green);cursor:pointer;">Mostrar</button>'
+        + '</div>';
+    }
+  }
+  list.innerHTML = html;
+}
+
+function ocultarProd(visIdx) {
+  var vis = [];
+  for (var i = 0; i < INVENTARIO.length; i++) {
+    if (INVENTARIO[i].exist <= INVENTARIO[i].umbral && !INVENTARIO[i].oculto) vis.push(i);
+  }
+  if (visIdx < vis.length) INVENTARIO[vis[visIdx]].oculto = true;
+  mostrarBajos();
+  toast('Oculta de las tablets');
+}
+
+function mostrarProd(ocuIdx) {
+  var ocu = [];
+  for (var i = 0; i < INVENTARIO.length; i++) {
+    if (INVENTARIO[i].exist <= INVENTARIO[i].umbral && INVENTARIO[i].oculto) ocu.push(i);
+  }
+  if (ocuIdx < ocu.length) INVENTARIO[ocu[ocuIdx]].oculto = false;
+  mostrarBajos();
+  toast('Visible en tablets nuevamente');
+}
+
+// ════════════════════════════════════════
+// REPORTES
+// ════════════════════════════════════════
+function renderRep() {
+  document.getElementById('rep-lotes').textContent = ASIGNADAS.length;
+  var html = '';
+  for (var ei = 0; ei < EQUIPO.length; ei++) {
+    var eq = EQUIPO[ei];
+    var mis = 0;
+    for (var ai = 0; ai < ASIGNADAS.length; ai++) {
+      if (ASIGNADAS[ai].colab === eq.id) mis++;
+    }
+    html += '<div class="row">'
+      + '<div class="av" style="width:28px;height:28px;font-size:10px;background:' + eq.bg + ';color:' + eq.fc + ';">' + eq.i + '</div>'
+      + '<span style="font-size:13px;font-weight:600;color:var(--text);flex:1;">' + eq.n + '</span>'
+      + '<span style="font-size:12px;color:var(--text2);">' + mis + ' receta' + (mis !== 1 ? 's' : '') + '</span>'
+      + '</div>';
+  }
+  var rc = document.getElementById('rep-colabs');
+  if (rc) rc.innerHTML = html || '<div style="padding:14px;text-align:center;color:var(--text2);">Sin datos</div>';
+}
+
+
+// ════════════════════════════════════════
+// GUARDAR ASIGNACIÓN EN SHEET
+// ════════════════════════════════════════
+var SCRIPT_URL_GER = 'https://script.google.com/macros/s/AKfycbwMH7KbXDLw0oSTD8eGa-_ObEG9LD5apbg_sZjhwmESkLTrsiYgZo2chPoCKVpWWeSx/exec';
+
+function guardarAsignacionSheet(recNombre, colabId, unidades) {
+  var fecha = new Date();
+  var fechaStr = String(fecha.getDate()).padStart(2,'0') + '/' + 
+                 String(fecha.getMonth()+1).padStart(2,'0') + '/' + 
+                 fecha.getFullYear();
+  var hora = String(fecha.getHours()).padStart(2,'0') + ':' + String(fecha.getMinutes()).padStart(2,'0');
+  fetch(SCRIPT_URL_GER, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      tipo: 'asignacion',
+      fecha: fechaStr,
+      hora: hora,
+      receta: recNombre,
+      colaboradora: colabId,
+      unidades: unidades
+    })
+  }).then(function(){
+    console.log('Asignacion guardada en Sheet');
+  }).catch(function(e){
+    console.log('Error guardando asignacion:', e);
+  });
+}
+
+
+// ════════════════════════════════════════
+// GUARDAR ASIGNACIÓN EN SHEET
+// ════════════════════════════════════════
+function guardarAsignacionSheet(receta, colaboradora, unidades) {
+  if (!GER_SCRIPT_URL) return;
+  var ahora = new Date();
+  var fecha = ahora.toLocaleDateString('es-GT',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'/');
+  var hora = ahora.toLocaleTimeString('es-GT',{hour:'2-digit',minute:'2-digit'});
+  fetch(GER_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      tipo: 'asignacion',
+      fecha: fecha,
+      hora: hora,
+      receta: receta,
+      colaboradora: colaboradora,
+      unidades: unidades
+    })
+  }).then(function(){
+    toast('Asignacion guardada en Sheet');
+  }).catch(function(e){
+    console.log('Sheet error:', e);
+  });
+}
+
+// ════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════
+function toast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1A1A1A;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700;z-index:999;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.15);';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2800);
+}
+</script>
+
+
+</body></html>

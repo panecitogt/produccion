@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/titis/Downloads/panecito_colaboradora_1.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panecito — Producción</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --or:#C05A20;--or2:#D97840;--or-bg:#FEF6F2;
+  --text:#1A1A1A;--text2:#888;--bd:#E8E8E8;
+  --green:#2E7D42;--green-bg:#F0F9F2;
+  --red:#C03030;--red-bg:#FDF0F0;
+  --blue:#2A5F8F;--blue-bg:#EEF4FB;
+  --amber:#C05A20;--amber-bg:#FEF6F2;
+  --bg:#F5F5F5;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);min-height:100vh;display:flex;justify-content:center;padding:16px;}
+.app{background:#fff;border-radius:16px;border:1px solid var(--bd);overflow:hidden;width:100%;max-width:420px;height:fit-content;box-shadow:0 4px 20px rgba(0,0,0,.07);}
+
+/* Topbar */
+.topbar{background:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--or);}
+.logo{font-size:18px;font-weight:700;color:var(--or);}
+.lote-tag{background:var(--or-bg);color:var(--or);font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;font-family:monospace;border:1px solid var(--or2);}
+
+/* Nav */
+.nav{display:flex;background:#fff;border-bottom:1px solid var(--bd);}
+.nb{flex:1;padding:10px 2px;font-size:10px;font-weight:700;text-align:center;color:#BBB;cursor:pointer;border:none;background:transparent;border-bottom:3px solid transparent;}
+.nb.active{color:var(--or);border-bottom:3px solid var(--or);}
+.tc{display:none;} .tc.active{display:block;}
+
+/* Section headers */
+.sec{background:#F8F8F8;color:var(--text2);padding:7px 14px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+.sec-br{background:#F8F8F8;color:var(--text2);padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+.sec-green{background:var(--green-bg);color:var(--green);padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+.info-note{padding:9px 14px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--bd);line-height:1.5;}
+
+/* Modales */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,.12);}
+.modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.modal-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:16px;}
+.modal-btns{display:flex;gap:8px;}
+.btn-ok{flex:1;padding:12px;background:var(--or);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-cancel{flex:1;padding:12px;background:#F0F0F0;color:var(--text2);border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;}
+
+/* Pendientes */
+.pend-item{padding:12px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;cursor:pointer;user-select:none;transition:background .1s;}
+.pend-item:active{background:var(--or-bg);}
+.pend-item.activa{background:var(--or-bg);border-left:4px solid var(--or);}
+.pend-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.pend-body{flex:1;min-width:0;}
+.pend-nombre{font-size:14px;font-weight:700;color:var(--text);}
+.pend-estado{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4;}
+.pend-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;display:inline-block;margin-top:4px;}
+.tag-ger{background:var(--blue-bg);color:var(--blue);}
+.tag-yo{background:var(--or-bg);color:var(--or);}
+.tag-apoyo{background:var(--green-bg);color:var(--green);}
+.pend-bar{margin-top:5px;height:4px;background:#EFEFEF;border-radius:2px;overflow:hidden;}
+.pend-fill{height:100%;border-radius:2px;}
+.avail-row{padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;}
+.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:7px;flex-shrink:0;}
+
+/* Config */
+.p-opt{width:36px;height:36px;border-radius:9px;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;color:var(--text2);background:#fff;transition:all .15s;}
+.p-opt.on{background:var(--or);border-color:var(--or);color:#fff;}
+
+/* Trabajo */
+.work-hdr{background:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd);}
+.work-back{color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:8px;border:1px solid var(--bd);}
+.snav{display:flex;background:#fff;border-bottom:1px solid var(--bd);}
+.snb{flex:1;padding:8px 2px;font-size:10px;font-weight:700;text-align:center;color:#BBB;cursor:pointer;border:none;background:transparent;border-bottom:3px solid transparent;}
+.snb.active{color:var(--or);border-bottom:3px solid var(--or);}
+
+/* Pesado */
+.lock-box{background:#F8F8F8;padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;}
+.pbar-wrap{padding:7px 14px 2px;}
+.pbar{height:6px;background:#EFEFEF;border-radius:4px;overflow:hidden;margin-top:4px;}
+.pfill{height:100%;background:var(--or);border-radius:4px;transition:width .3s;}
+.hint{text-align:center;padding:6px 14px;font-size:11px;color:var(--text2);background:#FAFAFA;border-bottom:1px solid var(--bd);}
+
+/* Panel apoyo */
+.apoyo-strip{margin:8px 14px 0;padding:10px 12px;background:var(--blue-bg);border-radius:10px;border:1px solid #C8DAF0;}
+.cambio-btn{font-size:11px;font-weight:700;color:var(--or);background:transparent;border:1px solid var(--or2);border-radius:7px;padding:4px 10px;cursor:pointer;margin-top:6px;}
+
+/* Ingredientes */
+.ing-item{border-bottom:1px solid var(--bd);display:flex;align-items:stretch;user-select:none;}
+.ing-item.done{background:var(--green-bg);}
+.ing-item.prob{background:var(--red-bg);}
+.ing-item.rep{background:var(--amber-bg);}
+.chk-z{width:54px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;border-right:1px solid var(--bd);}
+.chk{width:32px;height:32px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s;}
+.chk.ok{background:var(--or);border-color:var(--or);color:#fff;}
+.chk.pr{background:var(--red-bg);border-color:#EDAAAA;color:var(--red);font-size:14px;font-weight:700;}
+.chk.rp{background:var(--amber-bg);border-color:var(--or2);color:var(--or);font-size:14px;}
+.ing-body{flex:1;padding:10px 13px;}
+.ing-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;}
+.ing-code{font-family:monospace;font-size:11px;font-weight:700;}
+.ing-peso{font-size:22px;font-weight:700;line-height:1;}
+.htag{font-size:10px;color:var(--text2);padding:2px 7px;border-radius:7px;border:1px solid var(--bd);display:inline-block;margin-top:4px;}
+.prob-box{background:var(--red-bg);border-top:1px solid #EDCECE;padding:11px 13px;}
+.prob-inp{width:90px;padding:7px 10px;border:1.5px solid #EDAAAA;border-radius:8px;font-size:17px;font-weight:700;color:var(--red);text-align:center;background:#fff;}
+.fpill{background:var(--red);color:#fff;border-radius:7px;padding:5px 12px;font-size:14px;font-weight:700;}
+.un-btn{flex:1;padding:10px 8px;background:#EEE;color:#BBB;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:not-allowed;line-height:1.3;transition:all .2s;}
+.un-btn.og{background:var(--green);color:#fff;cursor:pointer;}
+.un-btn.rd{background:var(--red);color:#fff;cursor:pointer;}
+.rep-box{background:var(--amber-bg);border-top:1px solid #EDCEB0;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;}
+.done-banner{display:none;margin:12px 14px;padding:18px;background:var(--green-bg);border-radius:12px;border:2px solid var(--green);text-align:center;}
+
+/* Proceso */
+.proc-hdr{background:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd);}
+.pdots{display:flex;gap:3px;padding:7px 14px 0;}
+.pdot{flex:1;height:5px;border-radius:3px;}
+.paso-card{margin:8px 14px;background:#fff;border-radius:11px;border:1px solid var(--bd);overflow:hidden;}
+.paso-top{background:#F8F8F8;padding:12px 14px;border-bottom:1px solid var(--bd);}
+.paso-body{padding:12px 14px;}
+.espera-card{margin:8px 14px;background:var(--or-bg);border-radius:10px;border:1.5px solid var(--or2);overflow:hidden;}
+.espera-row{display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--or2);font-size:12px;}
+.espera-row:last-child{border-bottom:none;}
+.btn-sig{width:calc(100% - 28px);margin:8px 14px 4px;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:not-allowed;background:#F0F0F0;color:#CCC;transition:all .4s;}
+.btn-sig.on{background:var(--or);cursor:pointer;color:#fff;box-shadow:0 4px 16px rgba(192,90,32,.2);}
+.btn-ayuda{width:calc(100% - 28px);margin:0 14px 8px;padding:11px;border:1px solid var(--bd);border-radius:11px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--text2);}
+.proc-done{display:none;margin:10px 14px;padding:18px;background:var(--green-bg);border-radius:12px;border:2px solid var(--green);text-align:center;}
+textarea{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px;color:var(--text);resize:none;font-family:inherit;background:#FAFAFA;}
+
+/* Merma */
+.merma-card{margin:10px 14px;background:#FAFAFA;border-radius:11px;border:1px solid var(--bd);overflow:hidden;}
+.merma-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--bd);}
+.merma-row:last-child{border-bottom:none;}
+.merma-inp{width:80px;padding:7px 10px;border:1.5px solid var(--bd);border-radius:8px;font-size:17px;font-weight:700;color:var(--or);text-align:center;background:#fff;}
+
+/* Rechazo */
+.mot-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .1s;}
+.mot-opt.on{background:var(--red-bg);}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--bd);flex-shrink:0;transition:all .15s;}
+.radio.on{background:var(--red);border-color:var(--red);}
+.colab-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .1s;}
+.colab-opt.on{background:var(--or-bg);}
+.radio-or{width:20px;height:20px;border-radius:50%;border:2px solid var(--bd);flex-shrink:0;transition:all .15s;}
+.radio-or.on{background:var(--or);border-color:var(--or);}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+
+/* Pesado lock */
+.t-opt{padding:7px 12px;border-radius:8px;border:1.5px solid var(--bd);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;background:#fff;transition:all .15s;}
+.t-opt.on{background:var(--or);border-color:var(--or);color:#fff;}
+
+/* Alerta apoyo */
+.alerta-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;align-items:flex-end;justify-content:center;padding:16px;}
+.alerta-bg.show{display:flex;}
+.alerta-sheet{background:#fff;border-radius:20px 20px 16px 16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 -4px 24px rgba(0,0,0,.1);}
+.alerta-hdr{background:var(--or);padding:14px 16px;display:flex;gap:10px;align-items:center;}
+.alerta-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+
+/* Perfil */
+.skill-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin:2px;}
+.sk-cert{background:var(--green-bg);color:var(--green);}
+.sk-apren{background:var(--or-bg);color:var(--or);}
+.ind-row{padding:9px 12px;border-bottom:1px solid var(--bd);}
+.ind-row:last-child{border-bottom:none;}
+
+/* Botones generales */
+.btn{width:calc(100% - 28px);margin:10px 14px;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-or{background:var(--or);color:#fff;}
+input[type=text]{width:100%;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;font-size:13px;color:var(--text);background:#FAFAFA;}
+
+/* Login */
+.login-bg{position:fixed;inset:0;background:#F5F5F5;display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;}
+.login-card{background:#fff;border-radius:20px;border:1px solid #E8E8E8;box-shadow:0 4px 24px rgba(0,0,0,.08);width:100%;max-width:360px;overflow:hidden;}
+.login-hdr{background:var(--or);padding:28px 20px;text-align:center;}
+.login-logo{font-size:28px;font-weight:700;color:#fff;letter-spacing:.02em;}
+.login-sub{font-size:13px;color:rgba(255,255,255,.8);margin-top:4px;}
+.colab-btn{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #F0F0F0;cursor:pointer;transition:background .1s;border:none;background:transparent;width:100%;text-align:left;}
+.colab-btn:last-child{border-bottom:none;}
+.colab-btn:active{background:#FEF6F2;}
+.colab-av{width:40px;height:40px;border-radius:50%;background:var(--or-bg);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--or);flex-shrink:0;border:1.5px solid var(--or2);}
+.colab-name{font-size:15px;font-weight:700;color:var(--text);}
+.colab-hint{font-size:11px;color:var(--text2);margin-top:1px;}
+.pin-screen{display:none;padding:24px 20px;}
+.pin-dots{display:flex;gap:10px;justify-content:center;margin:16px 0 20px;}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--bd);transition:all .15s;}
+.pin-dot.on{background:var(--or);border-color:var(--or);}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.pin-btn{padding:16px;background:#F8F8F8;border:1px solid var(--bd);border-radius:12px;font-size:20px;font-weight:700;color:var(--text);cursor:pointer;text-align:center;transition:all .15s;}
+.pin-btn:active{background:var(--or-bg);border-color:var(--or2);}
+.pin-del{background:#FDF0F0;border-color:#EDCECE;color:var(--red);}
+.pin-error{display:none;text-align:center;font-size:12px;color:var(--red);font-weight:700;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<!-- Modal: confirmar tomar receta -->
+<div class="modal-bg" id="m-tomar">
+  <div class="modal">
+    <div class="modal-title" id="m-tomar-titulo"></div>
+    <div class="modal-desc" id="m-tomar-desc"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="cerrarM(&#39;m-tomar&#39;)">Cancelar</button>
+      <button class="btn-ok" onclick="confirmarTomar()">Agregar a mis pendientes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: configurar equipo -->
+<div class="modal-bg" id="m-config">
+  <div class="modal" style="padding:0;overflow:hidden;max-width:380px;">
+    <div style="background:var(--or);padding:12px 16px;">
+      <div style="font-size:10px;color:rgba(255,255,255,.75);font-weight:700;text-transform:uppercase;margin-bottom:2px;">Antes de empezar</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;" id="m-config-titulo">Configurar equipo</div>
+    </div>
+    <div style="padding:14px;">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5;">Gerencia definió los mínimos. Ajusta si necesitas más personas.</div>
+      <div id="m-config-pasos"></div>
+      <div style="margin-top:12px;padding:9px 12px;background:var(--blue-bg);border-radius:9px;border:1px solid #C8DAF0;margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:2px;">Aprobación automática</div>
+        <div style="font-size:11px;color:var(--blue);opacity:.8;line-height:1.5;">Si gerencia no rechaza, se aprueba solo antes de cada paso.</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-cancel" style="flex:1;" onclick="cerrarM(&#39;m-config&#39;)">Cancelar</button>
+        <button class="btn-ok" style="flex:2;" onclick="confirmarConfig()">Confirmar → volver a pendientes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: escoger quién ayuda -->
+<div class="modal-bg" id="m-ayuda">
+  <div class="modal" style="padding:0;overflow:hidden;max-width:380px;">
+    <div style="background:var(--or);padding:12px 16px;">
+      <div style="font-size:14px;font-weight:700;color:#fff;" id="m-ayuda-titulo">¿Quién va a ayudar?</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;" id="m-ayuda-paso">—</div>
+    </div>
+    <div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;">Ordenadas por disponibilidad</div>
+    <div id="m-ayuda-lista"></div>
+    <div style="padding:10px 14px;display:flex;gap:8px;">
+      <button class="btn-cancel" style="flex:1;" onclick="cerrarM(&#39;m-ayuda&#39;)">Cancelar</button>
+      <button id="btn-conf-ayuda" style="flex:2;padding:12px;background:#EEE;color:#BBB;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:not-allowed;" onclick="confirmarAyuda()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: pesado bloqueado -->
+<div class="modal-bg" id="m-pesado-lock">
+  <div class="modal" style="text-align:center;">
+    <div style="font-size:40px;margin-bottom:10px;">🔒</div>
+    <div class="modal-title" style="text-align:center;">Pesado bloqueado</div>
+    <div class="modal-desc" style="text-align:center;">Solicita acceso a gerencia para revisarlo.</div>
+    <div id="m-pesado-body">
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="cerrarM(&#39;m-pesado-lock&#39;)">Cancelar</button>
+        <button class="btn-ok" onclick="solicitarAcceso()">Solicitar acceso</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: gerencia aprueba acceso -->
+<div class="modal-bg" id="m-ger-acceso">
+  <div class="modal" style="padding:0;overflow:hidden;max-width:360px;">
+    <div style="background:var(--or);padding:12px 16px;">
+      <div style="font-size:10px;color:rgba(255,255,255,.75);font-weight:700;text-transform:uppercase;margin-bottom:2px;">Panel de Gerencia</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;">Solicitud de acceso al pesado</div>
+    </div>
+    <div style="padding:14px;">
+      <div style="background:#F8F8F8;border-radius:10px;padding:10px 12px;margin-bottom:14px;border:1px solid var(--bd);">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:2px;">Colaboradora</div>
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Maria G.</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:6px;margin-bottom:2px;">Receta</div>
+        <div style="font-size:14px;font-weight:700;color:var(--text);" id="ger-receta">—</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:6px;margin-bottom:2px;">Hora solicitud</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);" id="ger-hora">—</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;margin-bottom:8px;">Tiempo de acceso</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div class="t-opt" id="ta-2" onclick="selTA(2)">2 min</div>
+          <div class="t-opt" id="ta-5" onclick="selTA(5)">5 min</div>
+          <div class="t-opt on" id="ta-10" onclick="selTA(10)">10 min</div>
+          <div class="t-opt" id="ta-15" onclick="selTA(15)">15 min</div>
+          <div class="t-opt" id="ta-0" onclick="selTA(0)">Sin límite</div>
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-top:6px;" id="ta-nota">Se bloquea automáticamente en 10 minutos.</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button style="flex:1;padding:11px;background:var(--red-bg);color:var(--red);border:1.5px solid #EDAAAA;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;" onclick="gerRechazar()">Rechazar</button>
+        <button style="flex:1;padding:11px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;" onclick="gerAprobar()">✅ Aprobar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: rechazo apoyo -->
+<div class="modal-bg" id="m-rechazo">
+  <div class="modal" style="padding:0;overflow:hidden;max-width:380px;">
+    <div style="background:var(--red);padding:12px 16px;">
+      <div style="font-size:14px;font-weight:700;color:#fff;">No puedo ir — ¿por qué?</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;">Escoge motivo y quién puede ir en tu lugar</div>
+    </div>
+    <div class="mot-opt" id="mot1" onclick="selMot(1)"><div class="radio" id="mr1"></div><div style="font-size:13px;color:var(--text);">Estoy en un paso crítico</div></div>
+    <div class="mot-opt" id="mot2" onclick="selMot(2)"><div class="radio" id="mr2"></div><div style="font-size:13px;color:var(--text);">No tengo tiempo suficiente</div></div>
+    <div class="mot-opt" id="mot3" onclick="selMot(3)"><div class="radio" id="mr3"></div><div style="font-size:13px;color:var(--text);">Otra razón</div></div>
+    <div id="otra-wrap" style="display:none;padding:8px 14px;"><textarea rows="2" placeholder="Describe el motivo..."></textarea></div>
+    <div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;">¿Quién puede ir en tu lugar?</div>
+    <div class="colab-opt" id="co1" onclick="selColabR(1)">
+      <div class="avatar" style="background:var(--green-bg);color:var(--green);">JP</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">Julia P.</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">Certificada · Libre ~35 min</div></div>
+      <div class="radio-or" id="cr1"></div>
+    </div>
+    <div class="colab-opt" id="co2" onclick="selColabR(2)">
+      <div class="avatar" style="background:var(--blue-bg);color:var(--blue);">SR</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">Sofia R.</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">Aprendiendo · Ocupada ~10 min</div></div>
+      <div class="radio-or" id="cr2"></div>
+    </div>
+    <div class="colab-opt" id="co3" onclick="selColabR(3)">
+      <div class="avatar" style="background:var(--red-bg);color:var(--red);">!</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--red);">Nadie disponible</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">Alerta al grupo → gerencia en 3 min</div></div>
+      <div class="radio-or" id="cr3"></div>
+    </div>
+    <div style="padding:10px 14px;display:flex;gap:8px;">
+      <button class="btn-cancel" style="flex:1;" onclick="cerrarRechazo()">Volver</button>
+      <button id="btn-conf-rechazo" style="flex:2;padding:12px;background:#EEE;color:#BBB;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:not-allowed;" onclick="confirmarRechazo()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Alerta apoyo entrante -->
+<div class="alerta-bg" id="alerta-apoyo">
+  <div class="alerta-sheet">
+    <div class="alerta-hdr">
+      <div class="alerta-icon">🤝</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#fff;">Necesitan tu apoyo</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:1px;">María G. te necesita</div>
+      </div>
+    </div>
+    <div style="padding:16px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Formado / porcionado · Receta 1.1</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;">Solo verás tu parte del paso — confirmas cuando terminas.</div>
+      <div style="background:var(--or-bg);border-radius:10px;padding:11px 14px;text-align:center;margin-bottom:14px;border:1px solid var(--or2);">
+        <div style="font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;margin-bottom:3px;">Tienes aproximadamente</div>
+        <div style="font-size:30px;font-weight:700;color:var(--or);font-family:monospace;" id="alerta-countdown">5:00</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px;">para terminar lo que estás haciendo</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button style="flex:1;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;" onclick="aceptarApoyo()">✅ Acepto</button>
+        <button style="flex:1;padding:13px;background:var(--red-bg);color:var(--red);border:1.5px solid #EDAAAA;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;" onclick="rechazarApoyo()">No puedo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="login-bg" id="login-bg">
+  <div class="login-card">
+    <div class="login-hdr">
+      <div class="login-logo">Panecito</div>
+      <div class="login-sub">Sistema de Producción</div>
+    </div>
+    <!-- Lista de colaboradoras -->
+    <div id="login-lista">
+      <div style="padding:10px 18px 6px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;">¿Quién eres?</div>
+      <button class="colab-btn" onclick="selColab(&#39;PANECITO&#39;,&#39;3003&#39;)">
+        <div class="colab-av" style="background:var(--or);color:#fff;border-color:var(--or);">PA</div>
+        <div><div class="colab-name">Panecito</div><div class="colab-hint" style="color:var(--or);font-weight:700;">Gerencia</div></div>
+        <div style="font-size:10px;color:var(--or);">★</div>
+      </button>
+      <div style="height:1px;background:#F0F0F0;margin:0 14px;"></div>
+      <button class="colab-btn" onclick="selColab(&#39;BRENDA&#39;,&#39;1001&#39;)">
+        <div class="colab-av">BR</div>
+        <div><div class="colab-name">Brenda</div><div class="colab-hint">Toca para ingresar</div></div>
+      </button>
+      <button class="colab-btn" onclick="selColab(&#39;MAYRA&#39;,&#39;2002&#39;)">
+        <div class="colab-av">MA</div>
+        <div><div class="colab-name">Mayra</div><div class="colab-hint">Toca para ingresar</div></div>
+      </button>
+      <button class="colab-btn" onclick="selColab(&#39;TITIS M.&#39;,&#39;4004&#39;)">
+        <div class="colab-av">TM</div>
+        <div><div class="colab-name">Titis M.</div><div class="colab-hint">Toca para ingresar</div></div>
+      </button>
+      <button class="colab-btn" onclick="selColab(&#39;YANET&#39;,&#39;5005&#39;)">
+        <div class="colab-av">YA</div>
+        <div><div class="colab-name">Yanet</div><div class="colab-hint">Toca para ingresar</div></div>
+      </button>
+    </div>
+    <!-- PIN screen -->
+    <div class="pin-screen" id="pin-screen">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <button onclick="volverLogin()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);">←</button>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text);" id="pin-nombre">—</div>
+          <div style="font-size:11px;color:var(--text2);">Ingresa tu PIN de 4 dígitos</div>
+        </div>
+      </div>
+      <div class="pin-dots">
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
+        <div class="pin-dot" id="pd4"></div>
+      </div>
+      <div class="pin-grid">
+        <button class="pin-btn" onclick="pinTap(&#39;1&#39;)">1</button>
+        <button class="pin-btn" onclick="pinTap(&#39;2&#39;)">2</button>
+        <button class="pin-btn" onclick="pinTap(&#39;3&#39;)">3</button>
+        <button class="pin-btn" onclick="pinTap(&#39;4&#39;)">4</button>
+        <button class="pin-btn" onclick="pinTap(&#39;5&#39;)">5</button>
+        <button class="pin-btn" onclick="pinTap(&#39;6&#39;)">6</button>
+        <button class="pin-btn" onclick="pinTap(&#39;7&#39;)">7</button>
+        <button class="pin-btn" onclick="pinTap(&#39;8&#39;)">8</button>
+        <button class="pin-btn" onclick="pinTap(&#39;9&#39;)">9</button>
+        <button class="pin-btn" onclick="pinTap(&#39;0&#39;)" style="grid-column:2;">0</button>
+        <button class="pin-btn pin-del" onclick="pinDel()">⌫</button>
+      </div>
+      <div class="pin-error" id="pin-error">PIN incorrecto — intenta de nuevo</div>
+    </div>
+  </div>
+</div>
+<div class="app" id="main-app" style="display:none;">
+  <div class="topbar">
+    <div>
+      <div class="logo">Panecito</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px;" id="fecha-top">lunes, 23 de marzo</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+      <div class="lote-tag" id="lote-disp">202603401</div>
+      <div style="font-size:10px;color:var(--text2);" id="topbar-usuario">—</div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nb active" id="nb-pend" onclick="showT(&#39;pend&#39;,this)">Mis pendientes</button>
+    <button class="nb" id="nb-trab" onclick="showT(&#39;trab&#39;,this)">Trabajando</button>
+    <button class="nb" id="nb-perf" onclick="showT(&#39;perf&#39;,this);renderGraficas()">Mi perfil</button>
+  </div>
+
+  <!-- TAB: MIS PENDIENTES -->
+  <div id="t-pend" class="tc active">
+    <div class="sec-br">Mis pendientes de hoy</div>
+    <div class="info-note">Toca cualquier receta para trabajarla.</div>
+    <div id="pend-list"><div class="pend-item" onclick="abrirReceta(&#39;R1&#39;)"><div class="pend-icon" style="background:var(--br-bg);">⚙️</div><div class="pend-body"><div class="pend-nombre">Receta 1.1</div><div class="pend-estado">50 u · Toca para configurar equipo</div><span class="pend-tag tag-ger">Asignada por gerencia</span><div class="pend-bar"><div class="pend-fill" style="width:0%;background:var(--or)"></div></div></div><div style="color:var(--text2);font-size:18px;">›</div></div><div class="pend-item" onclick="abrirReceta(&#39;R5&#39;)"><div class="pend-icon" style="background:var(--br-bg);">⚙️</div><div class="pend-body"><div class="pend-nombre">Receta 5.9</div><div class="pend-estado">70 u · Toca para configurar equipo</div><span class="pend-tag tag-ger">Asignada por gerencia</span><div class="pend-bar"><div class="pend-fill" style="width:0%;background:var(--or)"></div></div></div><div style="color:var(--text2);font-size:18px;">›</div></div></div>
+    <div class="sec" id="avail-hdr" style="margin-top:1px;">Disponibles</div>
+    <div id="avail-list" style="display: none;"></div>
+    <div id="avail-lock" style="display: block; padding: 16px 14px; background: var(--or-bg); text-align: center; border-bottom: 1px solid var(--bd);">
+      <div style="font-size:22px;margin-bottom:6px;">⏳</div>
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">Recetas bloqueadas</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5;">Puedes tomar otra cuando llegues a <strong>fermentación, horneado o enfriado</strong>.</div>
+    </div>
+    <div id="comp-sec" style="display:none;">
+      <div class="sec-green" style="margin-top:1px;">Completadas del día</div>
+      <div id="comp-list"></div>
+    </div>
+  </div>
+
+  <!-- TAB: TRABAJANDO -->
+  <div id="t-trab" class="tc">
+    <div id="trab-vacio" style="padding:28px 14px;text-align:center;color:var(--text2);font-size:14px;line-height:1.6;">
+      Selecciona una receta<br>de tus pendientes para comenzar.
+    </div>
+    <div id="trab-c" style="display:none;">
+      <div class="work-hdr">
+        <div>
+          <div style="font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;">Trabajando en</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:2px;" id="trab-nombre">—</div>
+        </div>
+        <button class="work-back" onclick="volver()">← Pendientes</button>
+      </div>
+      <div class="snav">
+        <button class="snb active" id="snb-p" onclick="clickPesado(this)">Pesado</button>
+        <button class="snb" id="snb-pr" onclick="showSub(&#39;spr&#39;,this)">Proceso</button>
+        <button class="snb" id="snb-m" onclick="showSub(&#39;sm&#39;,this)">Merma</button>
+      </div>
+
+      <!-- SUB: PESADO -->
+      <div id="sp" class="tc active">
+        <div id="sp-activo">
+          <div class="lock-box">
+            <div style="font-size:20px;">🔒</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);" id="p-titulo">—</div>
+              <div style="font-size:11px;color:var(--text2);" id="p-lote">—</div>
+            </div>
+          </div>
+          <div class="hint">Toque corto = completo &nbsp;·&nbsp; Mantén presionado = problema</div>
+          <div class="pbar-wrap">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-size:11px;color:var(--text2);" id="prog-lbl">0 de 7</span>
+              <span style="font-size:11px;font-weight:700;color:var(--or);" id="prog-pct">0%</span>
+            </div>
+            <div class="pbar"><div class="pfill" id="pfill" style="width:0%;"></div></div>
+          </div>
+          <div id="panel-apoyo-pesado" style="display:none;">
+            <div class="apoyo-strip">
+              <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:4px;">Apoyo en pesado</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;" id="apoyo-pesado-nombre">—</div>
+              <button class="cambio-btn" onclick="abrirSelAyuda(&#39;pesado&#39;,&#39;Pesado de ingredientes&#39;)">¿Cambió quién ayuda?</button>
+            </div>
+          </div>
+          <div class="sec" style="margin-top:4px;">Ingredientes</div>
+          <div id="ing-list"></div>
+          <div id="alerta-ger" style="display:none;margin:10px 14px 0;padding:11px 12px;background:var(--amber-bg);border-radius:10px;border:1.5px solid var(--or2);">
+            <div style="font-size:12px;font-weight:700;color:var(--or);margin-bottom:5px;">⚠️ Reportado a gerencia</div>
+            <div id="alerta-lista"></div>
+          </div>
+          <div class="done-banner" id="done-banner">
+            <div style="font-size:32px;margin-bottom:8px;">✅</div>
+            <div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px;">¡Pesado completo!</div>
+            <div style="font-size:12px;color:var(--green);margin-bottom:12px;">Todos los ingredientes registrados.</div>
+            <button style="width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;" onclick="irAProceso()">Continuar al proceso →</button>
+          </div>
+        </div>
+        <div id="sp-bloqueado" style="display:none;">
+          <div style="margin:16px 14px;padding:18px;background:var(--green-bg);border-radius:12px;border:2px solid var(--green);text-align:center;">
+            <div style="font-size:36px;margin-bottom:8px;">🔒</div>
+            <div style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:6px;">Pesado completado</div>
+            <div style="font-size:12px;color:var(--green);margin-bottom:14px;">Para revisar necesitas autorización de gerencia.</div>
+            <button style="width:100%;padding:13px;background:var(--or);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;" onclick="solicitarAcceso()">Solicitar acceso a gerencia</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB: PROCESO -->
+      <div id="spr" class="tc">
+        <div id="spr-vacio" style="padding:20px 14px;text-align:center;color:var(--text2);font-size:13px;">Completa el pesado para acceder al proceso.</div>
+        <div id="spr-c" style="display:none;">
+          <div class="proc-hdr">
+            <div>
+              <div style="font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;">Paso actual</div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:2px;" id="paso-hdr">—</div>
+            </div>
+            <div style="font-size:11px;color:var(--text2);font-weight:700;" id="paso-ctr">1 de 8</div>
+          </div>
+          <div class="pdots" id="pdots"></div>
+          <div id="espera-panel" style="display:none;">
+            <div style="padding:7px 14px;font-size:11px;color:var(--text2);font-weight:700;margin-top:6px;">Tiempo de espera — trabaja otra receta mientras</div>
+            <div class="espera-card">
+              <div style="background:var(--or);padding:7px 12px;display:flex;justify-content:space-between;">
+                <span style="font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;">Paso de espera</span>
+                <span style="font-family:monospace;font-size:12px;font-weight:700;color:#fff;" id="espera-restante">—</span>
+              </div>
+              <div class="espera-row"><span style="color:var(--text);font-weight:600;" id="espera-paso-nombre">—</span><span style="font-family:monospace;font-weight:700;color:var(--or);">Corriendo en fondo</span></div>
+            </div>
+            <div style="margin:6px 14px;padding:10px 12px;background:var(--green-bg);border-radius:10px;border:1px solid #B8DDBE;">
+              <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;">Puedes trabajar otra receta mientras esperas</div>
+              <button onclick="volver()" style="width:100%;padding:10px;background:var(--green);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">← Ir a mis pendientes</button>
+            </div>
+          </div>
+          <div id="panel-apoyo-paso" style="display:none;">
+            <div class="apoyo-strip">
+              <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:4px;" id="apoyo-paso-label">Apoyo en este paso</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;" id="apoyo-paso-nombre">—</div>
+              <button class="cambio-btn" id="btn-cambio-paso" onclick="">¿Cambió quién ayuda?</button>
+            </div>
+          </div>
+          <div class="paso-card">
+            <div class="paso-top">
+              <div style="font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;margin-bottom:4px;" id="paso-num">Paso 1 de 8</div>
+              <div style="font-size:19px;font-weight:700;color:var(--text);" id="paso-nombre">—</div>
+            </div>
+            <div class="paso-body">
+              <div style="font-size:14px;color:var(--text);line-height:1.7;" id="paso-desc">—</div>
+            </div>
+          </div>
+          <div style="margin:0 14px 8px;">
+            <div style="font-size:11px;color:var(--text2);font-weight:700;margin-bottom:4px;">Observaciones (opcional)</div>
+            <textarea id="paso-obs" rows="2" placeholder="Anotar cualquier novedad..."></textarea>
+          </div>
+          <button class="btn-sig" id="btn-sig" onclick="siguientePaso()">Esperando...</button>
+          <button class="btn-ayuda" onclick="pedirAyudaAhora()">🤝 Necesito ayuda en este paso</button>
+          <div class="proc-done" id="proc-done">
+            <div style="font-size:32px;margin-bottom:8px;">🎉</div>
+            <div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px;">¡Proceso completado!</div>
+            <div style="font-size:12px;color:var(--green);margin-bottom:14px;" id="proc-resumen">—</div>
+            <button style="width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;" onclick="irAMerma()">Registrar merma →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB: MERMA -->
+      <div id="sm" class="tc">
+        <div id="sm-vacio" style="padding:20px 14px;text-align:center;color:var(--text2);font-size:13px;">Completa el proceso para registrar la merma.</div>
+        <div id="sm-c" style="display:none;">
+          <div class="sec">Registro de merma del lote</div>
+          <div class="merma-card">
+            <div class="merma-row" style="background:var(--or-bg);">
+              <div style="font-size:13px;font-weight:600;color:var(--text);">Unidades planificadas</div>
+              <div style="font-size:20px;font-weight:700;color:var(--or);" id="merma-plan">—</div>
+            </div>
+            <div class="merma-row">
+              <div><div style="font-size:13px;font-weight:600;color:var(--text);">Salieron del horno</div><div style="font-size:10px;color:var(--text2);">Contar al sacar</div></div>
+              <input class="merma-inp" id="m1" type="number" placeholder="0" min="0" oninput="calcMerma()">
+            </div>
+            <div class="merma-row" style="background:#FAFAFA;">
+              <div><div style="font-size:13px;font-weight:600;color:var(--text);">Rechazadas por calidad</div><div style="font-size:10px;color:var(--text2);">Quemadas, mal formadas</div></div>
+              <input class="merma-inp" id="m2" type="number" placeholder="0" min="0" oninput="calcMerma()">
+            </div>
+            <div class="merma-row">
+              <div><div style="font-size:13px;font-weight:600;color:var(--text);">Llegan al mostrador</div><div style="font-size:10px;color:var(--text2);">Para venta</div></div>
+              <input class="merma-inp" id="m3" type="number" placeholder="0" min="0" oninput="calcMerma()">
+            </div>
+          </div>
+          <div id="merma-result" style="display:none;margin:8px 14px;padding:12px 14px;background:#fff;border-radius:10px;border:1px solid var(--bd);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:13px;color:var(--text2);">Merma total</span><span style="font-size:15px;font-weight:700;color:var(--text);" id="m-total">—</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:13px;color:var(--text2);">% del lote</span><span style="font-size:15px;font-weight:700;color:var(--text);" id="m-pct">—</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;color:var(--text2);">Estado</span><span style="font-size:13px;font-weight:700;" id="m-estado">—</span></div>
+          </div>
+          <div style="margin:0 14px 8px;padding:10px 12px;background:#fff;border-radius:10px;border:1px solid var(--bd);">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:5px;">Causa (si aplica)</div>
+            <textarea id="m-causa" rows="2" placeholder="Ej: quemadas, mal porcionadas..."></textarea>
+          </div>
+          <div style="margin:0 14px 8px;padding:10px 12px;background:#fff;border-radius:10px;border:1px solid var(--bd);">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:5px;">Firma — nombre completo</div>
+            <input type="text" id="m-firma" placeholder="Escribe tu nombre completo...">
+          </div>
+          <button class="btn btn-or" id="btn-conf-lote" onclick="confirmarLote()">Confirmar lote finalizado</button>
+          <div id="lote-conf" style="display:none;margin:0 14px 14px;padding:14px;background:var(--green-bg);border-radius:11px;border:2px solid var(--green);text-align:center;">
+            <div style="font-size:20px;margin-bottom:6px;">✅</div>
+            <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;">Lote confirmado</div>
+            <div style="font-size:12px;color:var(--green);" id="lote-conf-txt">—</div>
+            <button style="margin-top:12px;width:100%;padding:11px;background:var(--or);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;" onclick="volver()">← Volver a pendientes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: MI PERFIL -->
+  <div id="t-perf" class="tc">
+    <div class="sec-br">Mi perfil — Maria G.</div>
+    <div style="padding:16px 14px;display:flex;gap:14px;align-items:center;border-bottom:1px solid var(--bd);">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--or-bg);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--or);flex-shrink:0;border:2px solid var(--or2);">MG</div>
+      <div>
+        <div style="font-size:17px;font-weight:700;color:var(--text);">Maria G.</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px;">Producción · Panecito</div>
+        <div style="font-size:11px;color:var(--green);font-weight:700;margin-top:3px;">● Turno activo</div>
+      </div>
+    </div>
+    <div class="sec" style="margin-top:1px;">Habilidades</div>
+    <div style="padding:12px 14px;border-bottom:1px solid var(--bd);">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Se registran automáticamente conforme completas pasos.</div>
+      <div style="margin-bottom:8px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Pesado de ingredientes</span><br><span class="skill-badge sk-cert">Certificada · 47 veces</span></div>
+      <div style="margin-bottom:8px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Mezcla en seco y húmedo</span><br><span class="skill-badge sk-cert">Certificada · 45 veces</span></div>
+      <div style="margin-bottom:8px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Formado / porcionado</span><br><span class="skill-badge sk-apren">Aprendiendo · 8 veces</span></div>
+      <div style="margin-bottom:8px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Manejo del horno</span><br><span class="skill-badge sk-cert">Certificada · 40 veces</span></div>
+      <div><span style="font-size:12px;font-weight:700;color:var(--text);">Empaque y etiquetado</span><br><span class="skill-badge sk-apren">Aprendiendo · 5 veces</span></div>
+    </div>
+    <div class="sec">Rendimiento de hoy</div>
+    <div style="margin:12px 14px;padding:14px;background:var(--green-bg);border-radius:12px;border:2px solid var(--green);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div><div style="font-size:13px;font-weight:700;color:var(--green);">Buen día de trabajo ✅</div><div style="font-size:11px;color:var(--green);opacity:.8;margin-top:2px;">Mejor que tu promedio histórico</div></div>
+        <div style="font-size:36px;font-weight:700;color:var(--green);">A</div>
+      </div>
+      <div style="height:8px;background:rgba(46,125,66,.2);border-radius:4px;overflow:hidden;"><div style="width:88%;height:100%;background:var(--green);border-radius:4px;"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;"><span style="font-size:10px;color:var(--green);">Puntaje hoy: 88/100</span><span style="font-size:10px;color:var(--green);">Tu promedio: 79/100</span></div>
+    </div>
+    <div style="margin:0 14px 12px;background:#fff;border-radius:11px;border:1px solid var(--bd);overflow:hidden;">
+      <div style="padding:8px 12px;background:#F8F8F8;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;">Indicadores</div>
+      <div class="ind-row"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Velocidad por paso</span><span style="font-size:12px;font-weight:700;color:var(--green);">Excelente</span></div><div style="height:5px;background:#EFEFEF;border-radius:3px;overflow:hidden;"><div style="width:92%;height:100%;background:var(--green);border-radius:3px;"></div></div><div style="font-size:10px;color:var(--text2);margin-top:3px;">Promedio: 14 min/paso · Hoy: 12 min/paso</div></div>
+      <div class="ind-row" style="background:#FAFAFA;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Merma generada</span><span style="font-size:12px;font-weight:700;color:var(--green);">Bien</span></div><div style="height:5px;background:#EFEFEF;border-radius:3px;overflow:hidden;"><div style="width:80%;height:100%;background:var(--green);border-radius:3px;"></div></div><div style="font-size:10px;color:var(--text2);margin-top:3px;">Promedio: 5.2% · Hoy: 4.1%</div></div>
+      <div class="ind-row"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Puntualidad</span><span style="font-size:12px;font-weight:700;color:var(--green);">A tiempo</span></div><div style="height:5px;background:#EFEFEF;border-radius:3px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:3px;"></div></div><div style="font-size:10px;color:var(--text2);margin-top:3px;">Entrada: 8:58 am</div></div>
+      <div class="ind-row" style="background:#FAFAFA;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-size:12px;font-weight:700;color:var(--text);">Problemas en pesado</span><span style="font-size:12px;font-weight:700;color:var(--green);">Sin problemas</span></div><div style="height:5px;background:#EFEFEF;border-radius:3px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--green);border-radius:3px;"></div></div><div style="font-size:10px;color:var(--text2);margin-top:3px;">0 reportados hoy</div></div>
+    </div>
+    <div class="sec">Tiempo por paso — hoy vs promedio</div>
+    <div style="padding:12px 14px;">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Verde = más rápido · Rojo = tardaste más</div>
+      <div id="grafica-pasos" style="display:flex;align-items:flex-end;gap:5px;height:90px;margin-bottom:6px;"></div>
+      <div id="grafica-labels" style="display:flex;gap:5px;"></div>
+    </div>
+    <div class="sec">Últimos 7 días</div>
+    <div style="padding:12px 14px;padding-bottom:20px;">
+      <div style="display:flex;align-items:flex-end;gap:6px;height:60px;margin-bottom:6px;" id="grafica-semana"></div>
+      <div style="display:flex;gap:6px;" id="semana-labels"></div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text2);">Promedio esta semana: <strong style="color:var(--text);">82/100</strong></div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ═══════════════════════════════════════════════════════════
+// DATOS
+// ═══════════════════════════════════════════════════════════
+var INGS = [
+  {id:1, code:'NHA1', peso:13.0},
+  {id:2, code:'NHA2', peso:14.0},
+  {id:3, code:'NHA3', peso:15.5},
+  {id:4, code:'NHA7', peso:72.5},
+  {id:5, code:'MEP1', peso:35.5},
+  {id:6, code:'MAL1', peso:115.0},
+  {id:7, code:'MEN1', peso:6.5}
+];
+
+// espera:true = fermentación/horneado/enfriado → timer sigue en background
+// apoyo:true + apoyoKey = paso que necesita dos personas
+var PASOS = [
+  {n:'Mezcla en seco',       d:'Combina todos los ingredientes secos en el tazón grande. Tamiza dos veces para eliminar grumos. Asegúrate que todo esté bien integrado.',          min:0.25, espera:false, apoyo:false},
+  {n:'Mezcla en húmedo',     d:'En otro recipiente combina los ingredientes húmedos. Bate hasta mezcla homogénea y sin grumos.',                                                    min:0.25, espera:false, apoyo:false},
+  {n:'Integración',          d:'Agrega la mezcla húmeda sobre la seca poco a poco. Mezcla con movimientos envolventes. No sobrebatir.',                                            min:0.25, espera:false, apoyo:false},
+  {n:'Formado / porcionado', d:'Porciona la masa según el peso por unidad. Bolea suavemente y coloca en charola engrasada dejando espacio entre piezas.',                         min:0.25, espera:false, apoyo:true, apoyoKey:'formado'},
+  {n:'Fermentación',         d:'Coloca en cámara de fermentación. Cubre con plástico. Respeta el tiempo indicado — no abrir la cámara.',                                           min:0.25, espera:true,  apoyo:false},
+  {n:'Horneado',             d:'Introduce al horno precalentado. Sigue los parámetros de la ficha técnica. No abrir el horno en los primeros minutos.',                            min:0.25, espera:true,  apoyo:false},
+  {n:'Enfriado',             d:'Coloca en rejilla. Deja enfriar el tiempo mínimo. No empacar caliente — genera condensación.',                                                     min:0.25, espera:true,  apoyo:false},
+  {n:'Empaque y etiquetado', d:'Empaca en bolsa Panecito. Coloca etiqueta nutricional. Verifica código de barras. Cuenta unidades finales.',                                       min:0.25, espera:false, apoyo:true, apoyoKey:'empaque'}
+];
+
+// Colaboradoras disponibles para apoyo — ordenadas por tiempo libre
+var COLABS = [
+  {id:1, nombre:'Julia P.',  ini:'JP', bg:'#E8F5E9', fc:'#2D6A1F', habil:'Certificada formado y empaque', libre:true,  tiempo:'Libre ~35 min'},
+  {id:2, nombre:'Carmen L.', ini:'CL', bg:'#FEF0E6', fc:'#6B3A1F', habil:'Certificada empaque',            libre:true,  tiempo:'En espera 20 min'},
+  {id:3, nombre:'Sofia R.',  ini:'SR', bg:'#E3F2FD', fc:'#0D47A1', habil:'Aprendiendo formado',            libre:false, tiempo:'Ocupada ~10 min'},
+];
+
+// ═══════════════════════════════════════════════════════════
+// ESTADO GLOBAL
+// ═══════════════════════════════════════════════════════════
+var NOW = new Date();
+var LOTE = NOW.getFullYear() + '' + String(NOW.getMonth()+1).padStart(2,'0') + '' + String(Math.floor((NOW.getDate()-1)/7)+1) + '01';
+document.getElementById('lote-disp').textContent = LOTE;
+document.getElementById('fecha-top').textContent = NOW.toLocaleDateString('es-GT', {weekday:'long', day:'numeric', month:'long'});
+
+function mkRec(id, nombre, unidades, origen) {
+  var e = {};
+  INGS.forEach(function(i) { e[i.id] = null; });
+  return {
+    id: id, nombre: nombre, unidades: unidades, origen: origen,
+    estado: e, reportes: {},
+    configLista: false,
+    ayudaPesado: 1, ayudaFormado: 2, ayudaEmpaque: 1,
+    apoyoNombre: {pesado: null, formado: null, empaque: null},
+    pasoActual: 0, tiempos: [],
+    pesadoListo: false, procesoListo: false, mermaLista: false,
+    completada: false,
+    esApoyo: false, apoyoPaso: null
+  };
+}
+
+var PEND = [
+  mkRec('R1', 'Receta 1.1', 50, 'gerencia'),
+  mkRec('R5', 'Receta 5.9', 70, 'gerencia')
+];
+var DISP = [
+  {id:'R2', nombre:'Receta 2.3', unidades:80, badge:'Pedido', color:'or'},
+  {id:'R6', nombre:'Receta 6.1', unidades:40, badge:'Normal', color:'green'},
+  {id:'R3', nombre:'Receta 3.8', unidades:60, badge:'Normal', color:'green'},
+];
+
+var actId = null;
+var pendConf = null;
+var configRecId = null;
+var timerInt = null;
+var tiempoAcceso = 10;
+var accessInt = null;
+var motivoSel = null;
+var colabSelR = null;
+var ayudaSelId = null;
+var ayudaSelKey = null;
+var apoyoResuelta = false;
+var pressTimer = null;
+var alertaInt = null;
+var TICK = null;
+
+function R() { return PEND.find(function(r) { return r.id === actId; }); }
+
+// ═══════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════
+function showT(t, btn) {
+  ['t-pend','t-trab','t-perf'].forEach(function(x) { document.getElementById(x).classList.remove('active'); });
+  document.querySelectorAll('.nav .nb').forEach(function(x) { x.classList.remove('active'); });
+  document.getElementById('t-' + t).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showSub(s, btn) {
+  ['sp','spr','sm'].forEach(function(x) { document.getElementById(x).classList.remove('active'); });
+  ['snb-p','snb-pr','snb-m'].forEach(function(x) { document.getElementById(x).classList.remove('active'); });
+  document.getElementById(s).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+function clickPesado(btn) {
+  var rec = R();
+  if (rec && rec.pesadoListo) {
+    // Mostrar pantalla bloqueada
+    document.getElementById('sp-activo').style.display = 'none';
+    document.getElementById('sp-bloqueado').style.display = 'block';
+  } else {
+    document.getElementById('sp-activo').style.display = 'block';
+    document.getElementById('sp-bloqueado').style.display = 'none';
+    if (rec) renderIngs();
+  }
+  showSub('sp', btn);
+}
+
+// ════════════════════════════════════════════════════════
+// CARGAR PENDIENTES DESDE GOOGLE SHEETS
+// ════════════════════════════════════════════════════════
+function cargarPendientesSheet() {
+  if (!USUARIO_ACTUAL || USUARIO_ACTUAL === '') return;
+  var fecha = new Date().toLocaleDateString('es-GT', {day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'/');
+  var url = SCRIPT_URL + '?tipo=pendientes&colab=' + encodeURIComponent(USUARIO_ACTUAL) + '&fecha=' + encodeURIComponent(fecha);
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.status === 'ok' && data.data && data.data.length > 0) {
+        for (var i = 0; i < data.data.length; i++) {
+          var p = data.data[i];
+          var existe = false;
+          for (var j = 0; j < PEND.length; j++) {
+            if (PEND[j].nombre === p.receta) { existe = true; break; }
+          }
+          if (!existe) {
+            var rec = mkRec('SH-' + i, p.receta, p.unidades, 'gerencia');
+            PEND.push(rec);
+          }
+        }
+        renderPend();
+        toast('Pendientes actualizados desde gerencia');
+      }
+    })
+    .catch(function(){
+      // Sin internet - usar pendientes locales
+    });
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER PENDIENTES
+// ═══════════════════════════════════════════════════════════
+function renderPend() {
+  var list = document.getElementById('pend-list');
+  list.innerHTML = '';
+  var comps = [];
+
+  PEND.forEach(function(r) {
+    if (r.completada) { comps.push(r); return; }
+    var icon = '📋', iconBg = '#eee', fase = 'Toca para configurar equipo', pct = 0;
+
+    if (r.esApoyo) {
+      icon = '🤝'; iconBg = 'var(--green-bg)';
+      fase = 'Apoyo — ' + r.apoyoPaso;
+      pct = 50;
+    } else if (!r.configLista) {
+      icon = '⚙️'; iconBg = 'var(--br-bg)'; fase = 'Toca para configurar equipo'; pct = 0;
+    } else if (r.procesoListo) {
+      icon = '📦'; iconBg = 'var(--amber-bg)'; fase = 'Merma pendiente'; pct = 90;
+    } else if (r.pesadoListo) {
+      var p = PASOS[r.pasoActual];
+      icon = p && p.espera ? '⏳' : '⚙️';
+      iconBg = p && p.espera ? 'var(--blue-bg)' : 'var(--or-bg)';
+      if (p && p.espera && r.tiempos[r.pasoActual] && r.tiempos[r.pasoActual].inicio) {
+        var elapsed = Math.floor((new Date() - new Date(r.tiempos[r.pasoActual].inicio)) / 1000);
+        var segMin = r.tiempos[r.pasoActual].segMin || p.min * 60;
+        var restante = Math.max(0, segMin - elapsed);
+        var rm = Math.floor(restante / 60), rs = restante % 60;
+        fase = 'Proceso — paso ' + (r.pasoActual+1) + ' de ' + PASOS.length + (restante > 0 ? ' · ⏳ ' + rm + ':' + (rs < 10 ? '0' : '') + rs : ' · ✅ Listo para continuar');
+      } else {
+        fase = 'Proceso — paso ' + (r.pasoActual+1) + ' de ' + PASOS.length + (p && p.espera ? ' · En espera' : '');
+      }
+      pct = 40 + Math.round((r.pasoActual / PASOS.length) * 50);
+    } else {
+      var done = 0; INGS.forEach(function(i) { if (r.estado[i.id] !== null) done++; });
+      if (done > 0) { fase = 'Pesando — ' + done + ' de ' + INGS.length + ' ingredientes'; pct = Math.round(done / INGS.length * 35); }
+      icon = '⚖️'; iconBg = 'var(--or-bg)';
+    }
+
+    var tagClass = r.esApoyo ? 'tag-apoyo' : (r.origen === 'gerencia' ? 'tag-ger' : 'tag-yo');
+    var tagTxt = r.esApoyo ? 'Apoyo' : (r.origen === 'gerencia' ? 'Asignada por gerencia' : 'Yo la tomé');
+    var isAct = r.id === actId;
+
+    list.innerHTML += '<div class="pend-item' + (isAct ? ' activa' : '') + '" onclick="abrirReceta(\'' + r.id + '\')">'
+      + '<div class="pend-icon" style="background:' + iconBg + ';">' + icon + '</div>'
+      + '<div class="pend-body">'
+      + '<div class="pend-nombre">' + r.nombre + '</div>'
+      + '<div class="pend-estado">' + r.unidades + ' u · ' + fase + '</div>'
+      + '<span class="pend-tag ' + tagClass + '">' + tagTxt + '</span>'
+      + '<div class="pend-bar"><div class="pend-fill" style="width:' + pct + '%;background:' + (pct >= 90 ? 'var(--green)' : 'var(--or)') + '"></div></div>'
+      + '</div><div style="color:var(--text2);font-size:18px;">›</div>'
+      + '</div>';
+  });
+
+  if (!list.innerHTML) {
+    list.innerHTML = '<div style="padding:20px 14px;text-align:center;color:var(--text2);font-size:13px;">No tienes pendientes. Agrega una receta disponible.</div>';
+  }
+
+  // Disponibles — bloquear si hay activos no en espera
+  var hayActivos = PEND.filter(function(r) { return !r.completada && !r.esApoyo; }).length > 0;
+  var enEspera = PEND.some(function(r) {
+    if (r.completada || !r.pesadoListo || r.procesoListo) return false;
+    return PASOS[r.pasoActual] && PASOS[r.pasoActual].espera;
+  });
+  var puedeTomarMas = !hayActivos || enEspera;
+
+  var avail = document.getElementById('avail-list');
+  var lock = document.getElementById('avail-lock');
+  avail.innerHTML = '';
+
+  if (DISP.length === 0) {
+    lock.style.display = 'none';
+    avail.innerHTML = '<div style="padding:12px 14px;font-size:12px;color:var(--text2);text-align:center;">No hay más recetas disponibles.</div>';
+  } else if (!puedeTomarMas) {
+    avail.style.display = 'none'; lock.style.display = 'block';
+  } else {
+    avail.style.display = 'block'; lock.style.display = 'none';
+    DISP.forEach(function(r) {
+      var fc = r.color === 'or' ? 'var(--or)' : 'var(--green)';
+      var bg = r.color === 'or' ? 'var(--or-bg)' : 'var(--green-bg)';
+      avail.innerHTML += '<div class="avail-row">'
+        + '<div style="width:10px;height:10px;border-radius:50%;background:' + fc + ';flex-shrink:0;margin-top:2px;"></div>'
+        + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">' + r.nombre + '</div>'
+        + '<div style="font-size:11px;color:var(--text2);">' + r.unidades + ' unidades</div></div>'
+        + '<span class="badge" style="background:' + bg + ';color:' + fc + ';margin-right:8px;">' + r.badge + '</span>'
+        + '<button onclick="pedirTomar(\'' + r.id + '\',\'' + r.nombre + '\',' + r.unidades + ')" '
+        + 'style="padding:6px 12px;background:var(--or);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">+ Tomar</button>'
+        + '</div>';
+    });
+  }
+
+  // Completadas
+  var cs = document.getElementById('comp-sec');
+  var cl = document.getElementById('comp-list');
+  if (comps.length > 0) {
+    cs.style.display = 'block'; cl.innerHTML = '';
+    comps.forEach(function(r) {
+      var txt = r.esApoyo ? 'Apoyo · ' + r.apoyoPaso : 'Lote completado · ' + r.unidades + ' u';
+      cl.innerHTML += '<div style="padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;">'
+        + '<div style="font-size:20px;">' + (r.esApoyo ? '🤝' : '✅') + '</div>'
+        + '<div><div style="font-size:13px;font-weight:700;color:var(--text2);">' + r.nombre + '</div>'
+        + '<div style="font-size:11px;color:var(--text2);">' + txt + '</div></div></div>';
+    });
+  } else { cs.style.display = 'none'; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOMAR RECETA
+// ═══════════════════════════════════════════════════════════
+function pedirTomar(id, nombre, unidades) {
+  pendConf = {id:id, nombre:nombre, unidades:unidades};
+  document.getElementById('m-tomar-titulo').textContent = nombre;
+  document.getElementById('m-tomar-desc').textContent = unidades + ' unidades\n\nSe agregará a tus pendientes. Primero configurarás el equipo.';
+  document.getElementById('m-tomar').classList.add('show');
+}
+
+function cerrarM(id) { document.getElementById(id).classList.remove('show'); }
+
+function confirmarTomar() {
+  var p = pendConf; cerrarM('m-tomar');
+  DISP = DISP.filter(function(r) { return r.id !== p.id; });
+  PEND.push(mkRec(p.id, p.nombre, p.unidades, 'yo'));
+  renderPend();
+  mostrarConfig(p.id);
+}
+
+// ═══════════════════════════════════════════════════════════
+// CONFIGURAR EQUIPO
+// ═══════════════════════════════════════════════════════════
+function mostrarConfig(recId) {
+  configRecId = recId;
+  var rec = PEND.find(function(r) { return r.id === recId; });
+  if (!rec) return;
+  document.getElementById('m-config-titulo').textContent = 'Configurar equipo — ' + rec.nombre;
+  var pasosCfg = [
+    {key:'ayudaPesado',  label:'Pesado de ingredientes', sub:'Mínimo gerencia: 1 persona',  max:2},
+    {key:'ayudaFormado', label:'Formado / porcionado',   sub:'Mínimo gerencia: 2 personas', max:3},
+    {key:'ayudaEmpaque', label:'Empaque y etiquetado',   sub:'Gerencia: opcional',           max:2},
+  ];
+  var html = '';
+  pasosCfg.forEach(function(p) {
+    html += '<div style="padding:10px 0;border-bottom:1px solid var(--bd);">'
+      + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">' + p.label + '</div>'
+      + '<div style="font-size:11px;color:var(--text2);margin-bottom:8px;">' + p.sub + '</div>'
+      + '<div style="display:flex;gap:6px;">';
+    for (var i = 1; i <= p.max; i++) {
+      html += '<div onclick="selCfg(\'' + p.key + '\',' + i + ')" id="cfg-' + p.key + '-' + i + '" class="p-opt' + (rec[p.key] === i ? ' on' : '') + '">' + i + '</div>';
+    }
+    html += '</div></div>';
+  });
+  document.getElementById('m-config-pasos').innerHTML = html;
+  document.getElementById('m-config').classList.add('show');
+}
+
+function selCfg(key, val) {
+  var rec = PEND.find(function(r) { return r.id === configRecId; });
+  if (!rec) return;
+  rec[key] = val;
+  for (var i = 1; i <= 3; i++) {
+    var el = document.getElementById('cfg-' + key + '-' + i);
+    if (el) el.classList.toggle('on', rec[key] === i);
+  }
+}
+
+function confirmarConfig() {
+  var rec = PEND.find(function(r) { return r.id === configRecId; });
+  if (!rec) return;
+  rec.configLista = true;
+  cerrarM('m-config');
+  renderPend();
+  // Build queue of pasos that need help selection
+  var necesitan = [];
+  if (rec.ayudaPesado > 1)  necesitan.push({key:'pesado',  nombre:'Pesado de ingredientes'});
+  if (rec.ayudaFormado > 1) necesitan.push({key:'formado', nombre:'Formado / porcionado'});
+  if (rec.ayudaEmpaque > 1) necesitan.push({key:'empaque', nombre:'Empaque y etiquetado'});
+
+  if (necesitan.length > 0) {
+    // Ask who helps for each paso that needs it, one by one
+    abrirSelAyudaSecuencia(rec.id, necesitan, 0);
+  } else {
+    toast('✅ Configuración guardada');
+  }
+}
+
+function abrirSelAyudaSecuencia(recId, lista, idx) {
+  if (idx >= lista.length) {
+    toast('✅ Todo listo — gerencia recibió las solicitudes');
+    return;
+  }
+  var item = lista[idx];
+  ayudaSelKey = item.key;
+  ayudaSelId = null;
+  ayudaSeq = {recId: recId, lista: lista, idx: idx};
+  var mt = document.getElementById('m-ayuda-titulo');
+  var mp = document.getElementById('m-ayuda-paso');
+  if (mt) mt.textContent = '¿Quién ayuda en este paso?';
+  if (mp) mp.textContent = item.nombre + ' (' + (idx+1) + ' de ' + lista.length + ')';
+  renderListaAyuda();
+  var btn = document.getElementById('btn-conf-ayuda');
+  if (btn) { btn.style.background = '#EEE'; btn.style.cursor = 'not-allowed'; }
+  document.getElementById('m-ayuda').classList.add('show');
+}
+
+
+function renderListaAyuda() {
+  var ordenadas = COLABS.slice().sort(function(a,b){return (b.libre?1:0)-(a.libre?1:0);});
+  var html = '';
+  for (var i=0; i<ordenadas.length; i++) {
+    var co = ordenadas[i];
+    var tStyle = co.libre ? 'background:var(--green-bg);color:var(--green);' : 'background:var(--or-bg);color:var(--or);';
+    html += '<div class="colab-opt" id="ayc'+co.id+'" onclick="selAyuda('+co.id+')">'
+      + '<div class="avatar" style="background:'+co.bg+';color:'+co.fc+';">'+co.ini+'</div>'
+      + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">'+co.nombre+'</div>'
+      + '<div style="font-size:10px;color:var(--text2);margin-top:2px;">'+co.habil+'</div></div>'
+      + '<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;'+tStyle+'">'+co.tiempo+'</span>'
+      + '<div class="radio-or" id="ayr'+co.id+'" style="margin-left:8px;"></div>'
+      + '</div>';
+  }
+  var ml = document.getElementById('m-ayuda-lista');
+  if (ml) ml.innerHTML = html;
+}
+function selAyuda(id) {
+  ayudaSelId = id;
+  for (var i=0; i<COLABS.length; i++) {
+    var co = COLABS[i];
+    var el = document.getElementById('ayc'+co.id);
+    var r  = document.getElementById('ayr'+co.id);
+    if (el) el.classList.toggle('on', co.id===id);
+    if (r)  r.classList.toggle('on',  co.id===id);
+  }
+  var btn = document.getElementById('btn-conf-ayuda');
+  if (btn) { btn.style.background='var(--or)'; btn.style.cursor='pointer'; }
+}
+
+function confirmarAyuda() {
+  if (!ayudaSelId) return;
+  var colab = COLABS.find(function(c) { return c.id === ayudaSelId; });
+
+  // Find correct recipe - either active or from sequence
+  var seq = window._ayudaSecuencia;
+  var recId = seq ? seq.recId : actId;
+  var rec = PEND.find(function(r) { return r.id === recId; });
+
+  if (colab && rec) {
+    rec.apoyoNombre[ayudaSelKey] = colab.nombre;
+  }
+  cerrarM('m-ayuda');
+
+  // Update visible panels
+  if (rec && rec.id === actId) {
+    if (ayudaSelKey === 'pesado') {
+      var panel = document.getElementById('panel-apoyo-pesado');
+      var el = document.getElementById('apoyo-pesado-nombre');
+      if (panel) panel.style.display = 'block';
+      if (el) el.textContent = colab.nombre + ' viene a ayudarte en el pesado';
+    } else if (ayudaSelKey === 'extra') {
+      // Show toast — no permanent panel needed for ad-hoc help
+    } else {
+      renderPasoUI(rec);
+    }
+  }
+
+  // Continue sequence if in sequence mode
+  if (seq) {
+    var nextIdx = seq.idx + 1;
+    window._ayudaSecuencia = null;
+    if (nextIdx < seq.lista.length) {
+      setTimeout(function() {
+        abrirSelAyudaSecuencia(seq.recId, seq.lista, nextIdx);
+      }, 300);
+    } else {
+      toast('✅ Todo listo — gerencia recibió las solicitudes');
+    }
+  } else {
+    toast('✅ Alerta enviada a ' + (colab ? colab.nombre : '—'));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// ALERTA DE APOYO ENTRANTE
+// ═══════════════════════════════════════════════════════════
+function aceptarApoyo() {
+  if (apoyoResuelta) {
+    document.getElementById('alerta-apoyo').classList.remove('show');
+    clearInterval(alertaInt);
+    toast('Esta tarea ya fue asignada a otra colaboradora.');
+    return;
+  }
+  document.getElementById('alerta-apoyo').classList.remove('show');
+  clearInterval(alertaInt);
+  var apoyoRec = mkRec('R-ap-' + Date.now(), 'Receta 1.1', 50, 'apoyo');
+  apoyoRec.esApoyo = true;
+  apoyoRec.apoyoPaso = 'Formado / porcionado';
+  apoyoRec.configLista = true;
+  apoyoRec.pesadoListo = true;
+  apoyoRec.pasoActual = 3;
+  apoyoRec.tiempos[3] = {paso: 'Formado / porcionado', inicio: new Date(), fin: null, duracion: null, segMin: 0.25*60};
+  PEND.push(apoyoRec);
+  renderPend();
+  toast('✅ Apoyo agregado a tus pendientes');
+}
+
+function rechazarApoyo() {
+  document.getElementById('alerta-apoyo').classList.remove('show');
+  clearInterval(alertaInt);
+  motivoSel = null; colabSelR = null;
+  for (var i = 1; i <= 3; i++) {
+    document.getElementById('mot' + i).classList.remove('on');
+    document.getElementById('mr' + i).classList.remove('on');
+    document.getElementById('co' + i).classList.remove('on');
+    document.getElementById('cr' + i).classList.remove('on');
+  }
+  document.getElementById('otra-wrap').style.display = 'none';
+  document.getElementById('btn-conf-rechazo').style.background = '#ccc';
+  document.getElementById('btn-conf-rechazo').style.cursor = 'not-allowed';
+  document.getElementById('m-rechazo').classList.add('show');
+}
+
+function cerrarRechazo() {
+  document.getElementById('m-rechazo').classList.remove('show');
+  document.getElementById('alerta-apoyo').classList.add('show');
+}
+
+function selMot(n) {
+  motivoSel = n;
+  for (var i = 1; i <= 3; i++) { document.getElementById('mot' + i).classList.remove('on'); document.getElementById('mr' + i).classList.remove('on'); }
+  document.getElementById('mot' + n).classList.add('on'); document.getElementById('mr' + n).classList.add('on');
+  document.getElementById('otra-wrap').style.display = n === 3 ? 'block' : 'none';
+  updBtnR();
+}
+function selColabR(n) {
+  colabSelR = n;
+  for (var i = 1; i <= 3; i++) { document.getElementById('co' + i).classList.remove('on'); document.getElementById('cr' + i).classList.remove('on'); }
+  document.getElementById('co' + n).classList.add('on'); document.getElementById('cr' + n).classList.add('on');
+  updBtnR();
+}
+function updBtnR() {
+  var ok = motivoSel !== null && colabSelR !== null;
+  var btn = document.getElementById('btn-conf-rechazo');
+  btn.style.background = ok ? 'var(--red)' : '#ccc';
+  btn.style.cursor = ok ? 'pointer' : 'not-allowed';
+}
+function confirmarRechazo() {
+  if (!motivoSel || !colabSelR) return;
+  apoyoResuelta = true;
+  cerrarM('m-rechazo');
+  if (colabSelR === 3) {
+    toast('⚠️ Alerta enviada a todo el grupo. Si nadie responde en 3 min → gerencia');
+  } else {
+    var nombres = ['', 'Julia P.', 'Sofia R.', ''];
+    toast('✅ Alerta enviada a ' + nombres[colabSelR] + '. Ella fue notificada.');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// GRÁFICAS DE PERFIL
+// ═══════════════════════════════════════════════════════════
+function renderGraficas() {
+  var datosPasos = [
+    {label:'Seco',  hoy:9,  hist:14},
+    {label:'Húmed', hoy:7,  hist:11},
+    {label:'Integ', hoy:4,  hist:6},
+    {label:'Form',  hoy:14, hist:18},
+    {label:'Ferm',  hoy:45, hist:45},
+    {label:'Horno', hoy:28, hist:30},
+    {label:'Enfr',  hoy:18, hist:20},
+    {label:'Empa',  hoy:9,  hist:12},
+  ];
+  var maxVal = Math.max.apply(null, datosPasos.map(function(d) { return Math.max(d.hoy, d.hist); }));
+  var gp = document.getElementById('grafica-pasos');
+  var gl = document.getElementById('grafica-labels');
+  if (!gp || !gl) return;
+  gp.innerHTML = ''; gl.innerHTML = '';
+  datosPasos.forEach(function(d) {
+    var hPct = Math.round((d.hoy / maxVal) * 100);
+    var hHistPct = Math.round((d.hist / maxVal) * 100);
+    var col = d.hoy <= d.hist ? 'var(--green)' : 'var(--red)';
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;position:relative;height:90px;justify-content:flex-end;';
+    var line = document.createElement('div');
+    line.style.cssText = 'position:absolute;left:0;right:0;height:2px;background:var(--or);border-radius:1px;bottom:' + hHistPct + '%;opacity:0.5;';
+    var bar = document.createElement('div');
+    bar.style.cssText = 'width:100%;border-radius:4px 4px 0 0;background:' + col + ';height:' + hPct + '%;min-height:3px;';
+    wrap.appendChild(line); wrap.appendChild(bar);
+    gp.appendChild(wrap);
+    var lbl = document.createElement('div');
+    lbl.style.cssText = 'flex:1;text-align:center;font-size:9px;color:var(--text2);';
+    lbl.textContent = d.label;
+    gl.appendChild(lbl);
+  });
+
+  var semana = [72,85,68,90,78,88,88];
+  var dias = ['L','M','M','J','V','S','D'];
+  var gs = document.getElementById('grafica-semana');
+  var sl = document.getElementById('semana-labels');
+  if (!gs || !sl) return;
+  gs.innerHTML = ''; sl.innerHTML = '';
+  semana.forEach(function(v, i) {
+    var isHoy = i === 6;
+    var col = v >= 80 ? 'var(--green)' : v >= 65 ? 'var(--or)' : 'var(--red)';
+    var bar = document.createElement('div');
+    bar.style.cssText = 'flex:1;border-radius:4px 4px 0 0;background:' + (isHoy ? 'var(--br)' : col) + ';height:' + v + '%;min-height:4px;position:relative;';
+    if (isHoy) {
+      var dot = document.createElement('div');
+      dot.style.cssText = 'position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(--text);white-space:nowrap;';
+      dot.textContent = 'hoy';
+      bar.appendChild(dot);
+    }
+    gs.appendChild(bar);
+    var lbl = document.createElement('div');
+    lbl.style.cssText = 'flex:1;text-align:center;font-size:10px;color:' + (isHoy ? 'var(--br)' : 'var(--text2)') + ';font-weight:' + (isHoy ? '700' : '400') + ';';
+    lbl.textContent = dias[i];
+    sl.appendChild(lbl);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════
+function toast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--or);color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700;z-index:999;text-align:center;max-width:320px;box-shadow:0 4px 12px rgba(0,0,0,.15);';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2800);
+}
+
+
+// ════════════════════════════════════════════════════════
+// CARGAR PENDIENTES DESDE GOOGLE SHEETS
+// ════════════════════════════════════════════════════════
+function cargarPendientesSheet() {
+  if (!USUARIO_ACTUAL || SCRIPT_URL === 'PENDIENTE') return;
+  var fecha = new Date().toLocaleDateString('es-GT', {day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g, '/');
+  var url = SCRIPT_URL + '?tipo=pendientes&colab=' + encodeURIComponent(USUARIO_ACTUAL) + '&fecha=' + encodeURIComponent(fecha);
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.status === 'ok' && data.data && data.data.length > 0) {
+        for (var i = 0; i < data.data.length; i++) {
+          var p = data.data[i];
+          // Check if not already in PEND
+          var existe = false;
+          for (var j = 0; j < PEND.length; j++) {
+            if (PEND[j].nombre === p.receta) { existe = true; break; }
+          }
+          if (!existe) {
+            var rec = mkRec('SH-'+p.id, p.receta, p.unidades, 'gerencia');
+            rec.configLista = false;
+            PEND.push(rec);
+          }
+        }
+        renderPend();
+        toast('Pendientes actualizados desde gerencia');
+      }
+    })
+    .catch(function(err){ console.log('Sheet error:', err); });
+}
+
+// ═══════════════════════════════════════════════════════════
+// TICK GLOBAL — timers corren en background para todas las recetas
+// ═══════════════════════════════════════════════════════════
+TICK = setInterval(function() {
+  var needsRefresh = false;
+  PEND.forEach(function(rec) {
+    if (rec.completada || !rec.pesadoListo || rec.procesoListo) return;
+    if (rec.pasoActual >= PASOS.length) return;
+    var t = rec.tiempos[rec.pasoActual];
+    if (!t || !t.inicio || !t.segMin) return;
+    var elapsed = Math.floor((new Date() - new Date(t.inicio)) / 1000);
+    t.duracion = elapsed;
+    var justDone = elapsed >= t.segMin && !rec._pasoUnlocked;
+    if (justDone) {
+      rec._pasoUnlocked = true;
+      needsRefresh = true;
+      if (rec.id === actId) {
+        var btn = document.getElementById('btn-sig');
+        if (btn && btn.disabled) {
+          btn.disabled = false; btn.className = 'btn-sig on';
+          btn.textContent = 'Paso completado — siguiente →';
+          if (navigator.vibrate) navigator.vibrate([50,30,50]);
+        }
+      } else {
+        toast('✅ ' + rec.nombre + ' — paso listo para continuar');
+      }
+    }
+    if (PASOS[rec.pasoActual] && PASOS[rec.pasoActual].espera) needsRefresh = true;
+  });
+  if (needsRefresh) renderPend();
+}, 1000);
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+renderPend();
+
+// Demo: alerta de apoyo en 12 segundos
+// Alerta de apoyo — Fase 3 con Firebase
+
+// ═══ ABRIR RECETA ═══
+function abrirReceta(id){
+  var rec=PEND.find(function(r){return r.id===id;});
+  if(!rec||rec.completada)return;
+  if(!rec.configLista&&!rec.esApoyo){mostrarConfig(id);return;}
+  if(timerInt){clearInterval(timerInt);timerInt=null;}
+  actId=id;
+  var el;
+  el=document.getElementById('trab-nombre');if(el)el.textContent=rec.nombre+(rec.esApoyo?' · Apoyo':'');
+  el=document.getElementById('trab-vacio');if(el)el.style.display='none';
+  el=document.getElementById('trab-c');if(el)el.style.display='block';
+  el=document.getElementById('p-titulo');if(el)el.textContent=rec.nombre+' · '+rec.unidades+' u';
+  el=document.getElementById('p-lote');if(el)el.textContent='Lote '+LOTE+(rec.esApoyo?' · Apoyo':'');
+  el=document.getElementById('merma-plan');if(el)el.textContent=rec.unidades;
+  el=document.getElementById('alerta-ger');if(el)el.style.display='none';
+  el=document.getElementById('alerta-lista');if(el)el.innerHTML='';
+  el=document.getElementById('lote-conf');if(el)el.style.display='none';
+  el=document.getElementById('btn-conf-lote');if(el)el.style.display='block';
+  el=document.getElementById('snb-p');if(el)el.style.display='flex';
+  el=document.getElementById('snb-m');if(el)el.style.display='flex';
+  if(rec.esApoyo){
+    el=document.getElementById('snb-p');if(el)el.style.display='none';
+    el=document.getElementById('snb-m');if(el)el.style.display='none';
+    el=document.getElementById('spr-vacio');if(el)el.style.display='none';
+    el=document.getElementById('spr-c');if(el)el.style.display='block';
+    renderPasoUI(rec);iniciarTimer();
+    showSub('spr',document.getElementById('snb-pr'));
+  } else if(rec.procesoListo){
+    el=document.getElementById('sm-vacio');if(el)el.style.display='none';
+    el=document.getElementById('sm-c');if(el)el.style.display='block';
+    showSub('sm',document.getElementById('snb-m'));
+  } else if(rec.pesadoListo){
+    el=document.getElementById('sp-activo');if(el)el.style.display='none';
+    el=document.getElementById('sp-bloqueado');if(el)el.style.display='block';
+    el=document.getElementById('spr-vacio');if(el)el.style.display='none';
+    el=document.getElementById('spr-c');if(el)el.style.display='block';
+    renderPasoUI(rec);
+    if(!checkTimer(rec))iniciarTimer();
+    showSub('spr',document.getElementById('snb-pr'));
+  } else {
+    el=document.getElementById('sp-activo');if(el)el.style.display='block';
+    el=document.getElementById('sp-bloqueado');if(el)el.style.display='none';
+    var pp=document.getElementById('panel-apoyo-pesado'),pn=document.getElementById('apoyo-pesado-nombre');
+    if(pp&&pn){
+      if(rec.ayudaPesado>1){pp.style.display='block';pn.textContent=rec.apoyoNombre.pesado?rec.apoyoNombre.pesado+' viene a ayudarte':'Notificación enviada — esperando respuesta';}
+      else{pp.style.display='none';}
+    }
+    renderIngs();
+    showSub('sp',document.getElementById('snb-p'));
+  }
+  renderPend();
+  ['t-pend','t-trab','t-perf'].forEach(function(x){var e=document.getElementById(x);if(e)e.classList.remove('active');});
+  document.querySelectorAll('.nav .nb').forEach(function(x){x.classList.remove('active');});
+  el=document.getElementById('t-trab');if(el)el.classList.add('active');
+  el=document.getElementById('nb-trab');if(el)el.classList.add('active');
+}
+function volver(){
+  if(timerInt){clearInterval(timerInt);timerInt=null;}
+  actId=null;
+  var e;
+  e=document.getElementById('trab-vacio');if(e)e.style.display='block';
+  e=document.getElementById('trab-c');if(e)e.style.display='none';
+  renderPend();
+  ['t-pend','t-trab','t-perf'].forEach(function(x){var el=document.getElementById(x);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.nav .nb').forEach(function(x){x.classList.remove('active');});
+  e=document.getElementById('t-pend');if(e)e.classList.add('active');
+  e=document.getElementById('nb-pend');if(e)e.classList.add('active');
+}
+// ═══ PESADO ═══
+function renderIngs(){
+  var rec=R();if(!rec)return;
+  var list=document.getElementById('ing-list');if(!list)return;
+  list.innerHTML='';
+  for(var ii=0;ii<INGS.length;ii++){
+    var ing=INGS[ii],st=rec.estado[ing.id];
+    var bg=ii%2===0?'#fff':'var(--cr)';
+    var ic='ing-item';if(st==='ok')ic+=' done';if(st==='prob')ic+=' prob';if(st==='rep')ic+=' rep';
+    var cc='chk',cv='';
+    if(st==='ok'){cc+=' ok';cv='✓';}if(st==='prob'){cc+=' pr';cv='!';}if(st==='rep'){cc+=' rp';cv='!';}
+    var pc=st==='ok'?'#3B6D11':(st==='prob'||st==='rep'?'var(--red)':'var(--or)');
+    var nc=st==='ok'?'#3B6D11':(st==='prob'||st==='rep'?'var(--red)':'var(--br2)');
+    var ns=st==='ok'?'color:#3B6D11;text-decoration:line-through;':(st==='prob'||st==='rep'?'color:var(--red);':'color:var(--text2);');
+    var hint=st===null?'<span class="htag">Mantén presionado = problema</span>':'';
+    var extra='';
+    if(st==='prob'){extra='<div class="prob-box"><div style="font-size:12px;color:#791F1F;font-weight:700;margin-bottom:8px;">¿Cuánto lograste pesar?</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:13px;color:#791F1F;">Pesé:</span><input class="prob-inp" id="pi'+ing.id+'" type="number" min="0" max="'+ing.peso+'" step="0.1" placeholder="0" oninput="calcFalta('+ing.id+','+ing.peso+')"><span style="font-size:13px;color:#791F1F;">g de '+ing.peso+' g</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span style="font-size:13px;color:#791F1F;font-weight:700;">Falta:</span><span class="fpill" id="falta'+ing.id+'">'+ing.peso+' g</span></div><div style="font-size:11px;color:#791F1F;background:#fff;border-radius:7px;padding:7px 10px;margin-bottom:10px;border:1px solid #F09595;">Escribe cuánto pesaste para desbloquear.</div><div style="display:flex;gap:8px;"><button id="bto'+ing.id+'" class="un-btn" disabled onclick="resolverIng('+ing.id+')">✅ Ya lo conseguí<br><span style="font-weight:400;font-size:11px;">terminar de pesar</span></button><button id="btr'+ing.id+'" class="un-btn" disabled onclick="reportarGer('+ing.id+',\''+ing.code+'\','+ing.peso+')">🔴 Sin stock<br><span style="font-weight:400;font-size:11px;">reportar a gerencia</span></button></div></div>';}
+    if(st==='rep'){var rr=rec.reportes[ing.id]||{};extra='<div class="rep-box"><div><div style="font-size:12px;font-weight:700;color:var(--amber);">Reportado</div><div style="font-size:11px;color:#BF360C;">Pesado: '+(rr.pesado||0)+' g · Falta: '+(rr.falta||ing.peso)+' g</div></div><div style="font-size:10px;color:var(--amber);font-weight:700;">'+(rr.hora||'')+'</div></div>';}
+    list.innerHTML+='<div class="'+ic+'" style="background:'+(st?'':bg)+';">'+'<div class="chk-z" onmousedown="sP('+ing.id+')" onmouseup="eP('+ing.id+')" onmouseleave="cP()" ontouchstart="sP('+ing.id+')" ontouchend="eP('+ing.id+')" ontouchcancel="cP()"><div class="'+cc+'">'+cv+'</div></div>'+'<div style="flex:1;"><div class="ing-body"><div class="ing-top"><span class="ing-code" style="color:'+nc+';">'+ing.code+'</span><span class="ing-peso" style="color:'+pc+';">'+ing.peso+' g</span></div><div style="'+ns+'font-size:12px;">— — —</div>'+hint+'</div>'+extra+'</div></div>';
+  }
+  updateProg();
+}
+var pressTimer=null;
+function sP(id){var rec=R();if(!rec)return;if(rec.estado[id]==='ok'||rec.estado[id]==='prob'||rec.estado[id]==='rep')return;pressTimer=setTimeout(function(){pressTimer=null;rec.estado[id]='prob';renderIngs();if(navigator.vibrate)navigator.vibrate([30,20,30]);},600);}
+function eP(id){if(pressTimer!==null){clearTimeout(pressTimer);pressTimer=null;var rec=R();if(!rec)return;if(rec.estado[id]===null)rec.estado[id]='ok';else if(rec.estado[id]==='ok')rec.estado[id]=null;renderIngs();}}
+function cP(){if(pressTimer!==null){clearTimeout(pressTimer);pressTimer=null;}}
+function calcFalta(id,total){var inp=document.getElementById('pi'+id);if(!inp)return;var v=parseFloat(inp.value);var ok=!isNaN(v)&&inp.value.trim()!=='';var f=ok?Math.max(0,total-v).toFixed(1):total.toFixed(1);var el=document.getElementById('falta'+id);if(el)el.textContent=f+' g';var bo=document.getElementById('bto'+id),br=document.getElementById('btr'+id);if(bo){bo.classList.toggle('og',ok);bo.disabled=!ok;}if(br){br.classList.toggle('rd',ok);br.disabled=!ok;}}
+function resolverIng(id){var r=R();if(r){r.estado[id]='ok';renderIngs();}}
+function reportarGer(id,code,total){var rec=R();if(!rec)return;var inp=document.getElementById('pi'+id);var pesado=inp?(parseFloat(inp.value)||0):0;var falta=Math.max(0,total-pesado).toFixed(1);var hora=new Date().toLocaleTimeString('es-GT',{hour:'2-digit',minute:'2-digit'});rec.estado[id]='rep';rec.reportes[id]={pesado:pesado,falta:falta,hora:hora};renderIngs();var ag=document.getElementById('alerta-ger');if(ag)ag.style.display='block';var lista=document.getElementById('alerta-lista');if(lista&&!document.getElementById('ag-'+code)){var it=document.createElement('div');it.id='ag-'+code;it.style.cssText='display:flex;justify-content:space-between;padding:4px 0;font-size:12px;';it.innerHTML='<span style="font-family:monospace;font-weight:700;color:#791F1F;">'+code+'</span><span style="color:var(--red);font-weight:600;">Falta '+falta+' g</span>';lista.appendChild(it);}}
+function updateProg(){var rec=R();if(!rec)return;var done=0;INGS.forEach(function(i){if(rec.estado[i.id]!==null)done++;});var pct=Math.round(done/INGS.length*100);var pl=document.getElementById('prog-lbl'),pp=document.getElementById('prog-pct'),pf=document.getElementById('pfill');if(pl)pl.textContent=done+' de '+INGS.length;if(pp)pp.textContent=pct+'%';if(pf)pf.style.width=pct+'%';var db=document.getElementById('done-banner');if(db)db.style.display=done>=INGS.length?'block':'none';}
+// ═══ ACCESO PESADO ═══
+function solicitarAcceso(){var rec=R();var mb=document.getElementById('m-pesado-body');if(mb){var s='<div style="padding:12px;background:var(--or-bg);border-radius:10px;margin-bottom:12px;">';s+='<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">Solicitud enviada</div>';s+='<div style="font-size:12px;color:var(--text2);">Espera la aprobación...</div></div>';s+='<button class="btn-cancel" style="width:100%;" onclick="cerrarM(\'m-pesado-lock\')">Cancelar</button>';mb.innerHTML=s;}document.getElementById('m-pesado-lock').classList.add('show');var gr=document.getElementById('ger-receta'),gh=document.getElementById('ger-hora');if(gr)gr.textContent=rec?rec.nombre:'—';if(gh)gh.textContent=new Date().toLocaleTimeString('es-GT',{hour:'2-digit',minute:'2-digit'});setTimeout(function(){var m=document.getElementById('m-ger-acceso');if(m)m.classList.add('show');},1500);}
+function selTA(mins){tiempoAcceso=mins;[2,5,10,15,0].forEach(function(m){var e=document.getElementById('ta-'+m);if(e)e.classList.toggle('on',m===mins);});var tn=document.getElementById('ta-nota');if(tn)tn.textContent=mins===0?'Acceso permanente hasta que gerencia lo bloquee.':'Se bloquea automáticamente en '+mins+' minutos.';}
+function gerRechazar(){cerrarM('m-ger-acceso');var mb=document.getElementById('m-pesado-body');if(mb){var s='<div style="padding:12px;background:var(--red-bg);border-radius:10px;margin-bottom:12px;text-align:center;"><div style="font-size:20px;margin-bottom:4px;">❌</div><div style="font-size:13px;font-weight:700;color:var(--red);">Gerencia no autorizó el acceso</div></div>';s+='<button class="btn-cancel" style="width:100%;" onclick="cerrarM(\'m-pesado-lock\')">Cerrar</button>';mb.innerHTML=s;}}
+function gerAprobar(){cerrarM('m-ger-acceso');var mins=tiempoAcceso;var mb=document.getElementById('m-pesado-body');if(mb)mb.innerHTML='<div style="padding:12px;background:var(--green-bg);border-radius:10px;margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><div style="font-size:13px;font-weight:700;color:var(--green);">✅ Acceso autorizado</div><div style="font-size:11px;font-weight:700;color:var(--text2);" id="acc-cd">'+(mins===0?'Sin límite':mins+' min restantes')+'</div></div>'+(mins>0?'<div style="height:5px;background:#eee;border-radius:3px;overflow:hidden;"><div id="acc-fill" style="height:100%;background:var(--green);border-radius:3px;width:100%;transition:width 1s linear;"></div></div>':'')+'</div><button style="width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;" onclick="abrirPesadoAuth()">Ver pesado →</button>';if(mins>0){clearInterval(accessInt);var total=mins*60,left=total;accessInt=setInterval(function(){left--;var el=document.getElementById('acc-cd'),fi=document.getElementById('acc-fill');if(el)el.textContent=Math.floor(left/60)+':'+(left%60<10?'0':'')+left%60+' restantes';if(fi)fi.style.width=Math.round((left/total)*100)+'%';if(left<=0){clearInterval(accessInt);bloquearPesadoAuto();}},1000);}if(navigator.vibrate)navigator.vibrate([50,30,50]);}
+function abrirPesadoAuth(){cerrarM('m-pesado-lock');var spa=document.getElementById('sp-activo'),spb=document.getElementById('sp-bloqueado');if(spa)spa.style.display='block';if(spb)spb.style.display='none';var rec=R();if(rec)renderIngs();showSub('sp',document.getElementById('snb-p'));toast('Acceso autorizado por gerencia');}
+function bloquearPesadoAuto(){var spa=document.getElementById('sp-activo'),spb=document.getElementById('sp-bloqueado');if(spa)spa.style.display='none';if(spb)spb.style.display='block';var sp=document.getElementById('sp');if(sp&&sp.classList.contains('active'))showSub('spr',document.getElementById('snb-pr'));cerrarM('m-pesado-lock');toast('🔒 Acceso al pesado expiró');}
+// ═══ PROCESO ═══
+function irAProceso(){var rec=R();if(!rec)return;rec.pesadoListo=true;rec._unlocked=false;var spa=document.getElementById('sp-activo'),spb=document.getElementById('sp-bloqueado');if(spa)spa.style.display='none';if(spb)spb.style.display='block';var sprv=document.getElementById('spr-vacio'),sprc=document.getElementById('spr-c');if(sprv)sprv.style.display='none';if(sprc)sprc.style.display='block';var pd=document.getElementById('proc-done'),bs=document.getElementById('btn-sig');if(pd)pd.style.display='none';if(bs)bs.style.display='block';renderPasoUI(rec);iniciarTimer();showSub('spr',document.getElementById('snb-pr'));renderPend();}
+function renderPasoUI(rec){var p=PASOS[rec.pasoActual];if(!p)return;var el;el=document.getElementById('paso-hdr');if(el)el.textContent=p.n;el=document.getElementById('paso-num');if(el)el.textContent='Paso '+(rec.pasoActual+1)+' de '+PASOS.length;el=document.getElementById('paso-nombre');if(el)el.textContent=p.n;el=document.getElementById('paso-desc');if(el)el.textContent=p.d;el=document.getElementById('paso-ctr');if(el)el.textContent=(rec.pasoActual+1)+' de '+PASOS.length;el=document.getElementById('paso-obs');if(el)el.value='';var ep=document.getElementById('espera-panel');if(ep){ep.style.display=p.espera?'block':'none';if(p.espera){var epn=document.getElementById('espera-paso-nombre');if(epn)epn.textContent=p.n;}}var apPanel=document.getElementById('panel-apoyo-paso');if(apPanel){if(p.apoyo){var keyProp='ayuda'+p.apoyoKey.charAt(0).toUpperCase()+p.apoyoKey.slice(1);var necesita=rec[keyProp]>1;if(necesita){apPanel.style.display='block';var apl=document.getElementById('apoyo-paso-label'),apn=document.getElementById('apoyo-paso-nombre');if(apl)apl.textContent='Apoyo en '+p.n;if(apn)apn.textContent=rec.apoyoNombre[p.apoyoKey]?rec.apoyoNombre[p.apoyoKey]+' viene a ayudarte':'Notificación enviada — esperando respuesta';var bcp=document.getElementById('btn-cambio-paso');if(bcp){(function(key,nombre){bcp.onclick=function(){abrirSelAyuda(key,nombre);};})(p.apoyoKey,p.n);}}else{apPanel.style.display='none';}}else{apPanel.style.display='none';}}var dots=document.getElementById('pdots');if(dots){dots.innerHTML='';for(var i=0;i<PASOS.length;i++){var d=document.createElement('div');d.className='pdot';d.style.background=i<rec.pasoActual?'var(--green)':(i===rec.pasoActual?'var(--or)':'#E0E0E0');dots.appendChild(d);}}}
+function iniciarTimer(){clearInterval(timerInt);var rec=R();if(!rec)return;var p=PASOS[rec.pasoActual];if(!p)return;rec._unlocked=false;if(!rec.tiempos[rec.pasoActual]){rec.tiempos[rec.pasoActual]={paso:p.n,inicio:new Date(),fin:null,duracion:null,segMin:p.min*60};}var btn=document.getElementById('btn-sig');if(btn){btn.disabled=true;btn.className='btn-sig';btn.textContent='Esperando...';}checkTimer(rec);timerInt=setInterval(function(){checkTimer(R());},1000);}
+function checkTimer(rec){if(!rec||!rec.tiempos[rec.pasoActual])return false;var t=rec.tiempos[rec.pasoActual];if(!t.inicio||!t.segMin)return false;var elapsed=Math.floor((new Date()-new Date(t.inicio))/1000);t.duracion=elapsed;if(elapsed>=t.segMin){if(rec.id===actId){var btn=document.getElementById('btn-sig');if(btn&&btn.disabled){btn.disabled=false;btn.className='btn-sig on';btn.textContent='Paso completado — siguiente →';if(navigator.vibrate)navigator.vibrate([50,30,50]);}}return true;}return false;}
+function siguientePaso(){clearInterval(timerInt);var rec=R();if(!rec)return;if(rec.tiempos[rec.pasoActual]){rec.tiempos[rec.pasoActual].fin=new Date();var po=document.getElementById('paso-obs');rec.tiempos[rec.pasoActual].obs=po?po.value:'';}if(rec.esApoyo){rec.completada=true;var bs=document.getElementById('btn-sig'),pd=document.getElementById('proc-done');if(bs)bs.style.display='none';if(pd)pd.style.display='block';var pr=document.getElementById('proc-resumen');if(pr)pr.textContent='Apoyo en '+rec.apoyoPaso+' completado';renderPend();return;}rec._unlocked=false;rec.pasoActual++;if(rec.pasoActual>=PASOS.length){rec.procesoListo=true;var bs2=document.getElementById('btn-sig'),pd2=document.getElementById('proc-done');if(bs2)bs2.style.display='none';if(pd2)pd2.style.display='block';var total=0;for(var i=0;i<rec.tiempos.length;i++){if(rec.tiempos[i]&&rec.tiempos[i].duracion)total+=rec.tiempos[i].duracion;}var pr2=document.getElementById('proc-resumen');if(pr2)pr2.textContent='Tiempo total: '+Math.round(total/60)+' min · Lote '+LOTE;if(navigator.vibrate)navigator.vibrate([50,30,100]);renderPend();}else{renderPasoUI(rec);iniciarTimer();renderPend();}}
+// ═══ MERMA ═══
+function irAMerma(){showSub('sm',document.getElementById('snb-m'));var smv=document.getElementById('sm-vacio'),smc=document.getElementById('sm-c');if(smv)smv.style.display='none';if(smc)smc.style.display='block';}
+function calcMerma(){var m3=parseInt((document.getElementById('m3')||{}).value)||0;var rec=R();var plan=rec?rec.unidades:50;var merma=plan-m3;var pct=(merma/plan*100).toFixed(1);var mr=document.getElementById('merma-result');if(mr)mr.style.display='block';var mt=document.getElementById('m-total'),mp=document.getElementById('m-pct'),me=document.getElementById('m-estado');if(mt)mt.textContent=merma+' u';if(mp)mp.textContent=pct+'%';if(me){if(merma<=0){me.textContent='✅ Sin merma';me.style.color='var(--green)';}else if(parseFloat(pct)<=6){me.textContent='✅ Dentro del rango';me.style.color='var(--green)';}else if(parseFloat(pct)<=12){me.textContent='⚠️ Un poco alta — anota la causa';me.style.color='var(--amber)';}else{me.textContent='🔴 Merma muy alta — anota bien la causa';me.style.color='var(--red)';}}}
+function confirmarLote(){var firma=(document.getElementById('m-firma')||{}).value;if(!firma||!firma.trim()){alert('Escribe tu nombre completo para confirmar.');return;}var rec=R();if(rec){rec.mermaLista=true;rec.completada=true;}var bc=document.getElementById('btn-conf-lote'),lc=document.getElementById('lote-conf');if(bc)bc.style.display='none';if(lc)lc.style.display='block';var lt=document.getElementById('lote-conf-txt');if(lt)lt.textContent='Lote '+LOTE+' · '+firma.trim()+' · '+new Date().toLocaleTimeString('es-GT',{hour:'2-digit',minute:'2-digit'});renderPend();if(navigator.vibrate)navigator.vibrate([50,30,50,30,100]);}
+// ═══ QUIÉN AYUDA ═══
+function abrirSelAyuda(pasoKey,pasoNombre){ayudaSelKey=pasoKey;ayudaSelId=null;ayudaSeq=null;var mt=document.getElementById('m-ayuda-titulo'),mp=document.getElementById('m-ayuda-paso');if(mt)mt.textContent='¿Quién va a ayudar?';if(mp)mp.textContent=pasoNombre;renderListaAyuda();var btn=document.getElementById('btn-conf-ayuda');if(btn){btn.style.background='#ccc';btn.style.cursor='not-allowed';}document.getElementById('m-ayuda').classList.add('show');}
+function pedirAyudaAhora(){var rec=R();var pasoNombre=rec?PASOS[rec.pasoActual].n:'este paso';abrirSelAyuda('extra',pasoNombre);}
+function abrirCambioPasoActual(){var rec=R();if(!rec)return;var p=PASOS[rec.pasoActual];if(p&&p.apoyo)abrirSelAyuda(p.apoyoKey,p.n);else abrirSelAyuda('extra',p?p.n:'este paso');}
+// ═══ TICK ═══
+
+
+// ════════════════════════════════════════
+// CARGAR PENDIENTES DESDE SHEET
+// ════════════════════════════════════════
+var SCRIPT_URL_GET = 'https://script.google.com/macros/s/AKfycbwMH7KbXDLw0oSTD8eGa-_ObEG9LD5apbg_sZjhwmESkLTrsiYgZo2chPoCKVpWWeSx/exec';
+
+function cargarPendientesDelSheet() {
+  if (!USUARIO_ACTUAL) return;
+  var fecha = new Date();
+  var fechaStr = String(fecha.getDate()).padStart(2,'0') + '/' + 
+                 String(fecha.getMonth()+1).padStart(2,'0') + '/' + 
+                 fecha.getFullYear();
+  var url = SCRIPT_URL_GET + '?tipo=pendientes&colab=' + encodeURIComponent(USUARIO_ACTUAL) + '&fecha=' + encodeURIComponent(fechaStr);
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.status === 'ok' && data.data && data.data.length > 0) {
+        for (var i = 0; i < data.data.length; i++) {
+          var p = data.data[i];
+          var yaExiste = false;
+          for (var j = 0; j < PEND.length; j++) {
+            if (PEND[j].nombre === p.receta) { yaExiste = true; break; }
+          }
+          if (!yaExiste) {
+            var rec = mkRec('SH-' + i, p.receta, p.unidades, 'gerencia');
+            rec.configLista = true;
+            PEND.push(rec);
+          }
+        }
+        renderPend();
+        toast('Pendientes actualizados desde gerencia');
+      }
+    })
+    .catch(function(e){ console.log('Sheet err:', e); });
+}
+
+// ════════════════════════════════════════════════════════
+// GUARDAR EN GOOGLE SHEETS
+// ════════════════════════════════════════════════════════
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzX4Cyfu5w0UUSlcYFtu7gTWXd5n-plWWUo6H_dVl1UtlL1dKv_IH-lGycngn1tuyFm/exec'; // Se reemplaza con la URL del Apps Script
+
+function guardarEnSheet(datos) {
+  if (SCRIPT_URL === 'PENDIENTE') {
+    console.log('Script URL no configurada aún');
+    return;
+  }
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(datos)
+  }).then(function() {
+    toast('✅ Lote guardado en el registro');
+  }).catch(function() {
+    toast('⚠️ Sin conexión — datos guardados localmente');
+  });
+}
+
+function armarDatosLote(rec) {
+  var ahora = new Date();
+  var hora = ahora.toLocaleTimeString('es-GT', {hour:'2-digit', minute:'2-digit'});
+  var fecha = ahora.toLocaleDateString('es-GT', {day:'2-digit', month:'2-digit', year:'numeric'});
+
+  // Calcular tiempo total en minutos
+  var tiempoTotal = 0;
+  for (var i = 0; i < rec.tiempos.length; i++) {
+    if (rec.tiempos[i] && rec.tiempos[i].duracion) tiempoTotal += rec.tiempos[i].duracion;
+  }
+  tiempoTotal = Math.round(tiempoTotal / 60);
+
+  // Ingredientes con problemas
+  var problemasIng = [];
+  for (var id in rec.reportes) {
+    var r = rec.reportes[id];
+    var ing = INGS.find(function(i) { return i.id == id; });
+    if (ing) problemasIng.push(ing.code + ' (faltó ' + r.falta + 'g)');
+  }
+
+  // Merma
+  var m3 = parseInt((document.getElementById('m3') || {}).value) || 0;
+  var merma = rec.unidades - m3;
+  var pctMerma = ((merma / rec.unidades) * 100).toFixed(1);
+
+  return {
+    fecha: fecha,
+    hora: hora,
+    lote: LOTE,
+    colaboradora: USUARIO_ACTUAL,
+    receta: rec.nombre,
+    unidades_plan: rec.unidades,
+    unidades_finales: m3,
+    merma_unidades: merma,
+    merma_pct: pctMerma + '%',
+    tiempo_total_min: tiempoTotal,
+    problemas_pesado: problemasIng.length > 0 ? problemasIng.join(', ') : 'Ninguno',
+    causa_merma: (document.getElementById('m-causa') || {}).value || '',
+    firma: (document.getElementById('m-firma') || {}).value || ''
+  };
+}
+
+var TICK=setInterval(function(){var needsRefresh=false;for(var i=0;i<PEND.length;i++){var rec=PEND[i];if(rec.completada||!rec.pesadoListo||rec.procesoListo)continue;if(rec.pasoActual>=PASOS.length)continue;var t=rec.tiempos[rec.pasoActual];if(!t||!t.inicio||!t.segMin)continue;var elapsed=Math.floor((new Date()-new Date(t.inicio))/1000);t.duracion=elapsed;if(elapsed>=t.segMin&&!rec._unlocked){rec._unlocked=true;needsRefresh=true;if(rec.id===actId){var btn=document.getElementById('btn-sig');if(btn&&btn.disabled){btn.disabled=false;btn.className='btn-sig on';btn.textContent='Paso completado — siguiente →';if(navigator.vibrate)navigator.vibrate([50,30,50]);}}else{toast('✅ '+rec.nombre+' — paso listo para continuar');}}if(PASOS[rec.pasoActual]&&PASOS[rec.pasoActual].espera)needsRefresh=true;}if(needsRefresh)renderPend();},1000);
+
+
+// ════════════════════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════════════════════
+var USUARIO_ACTUAL = 'Panecito';
+var loginNombre = '';
+var loginPin = '';
+var loginPinCorrecto = '';
+
+var COLABS_LOGIN = {
+  'PANECITO': {pin:'3003', ini:'PA'},
+  'BRENDA':   {pin:'1001', ini:'BR'},
+  'MAYRA':    {pin:'2002', ini:'MA'},
+  'TITIS M.': {pin:'4004', ini:'TM'},
+  'YANET':    {pin:'5005', ini:'YA'}
+};
+
+function selColab(nombre, pin) {
+  loginNombre = nombre;
+  loginPinCorrecto = pin;
+  loginPin = '';
+  var el = document.getElementById('pin-nombre');
+  if (el) el.textContent = nombre;
+  document.getElementById('login-lista').style.display = 'none';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-error').style.display = 'none';
+  actualizarDots();
+}
+
+function volverLogin() {
+  loginPin = '';
+  document.getElementById('login-lista').style.display = 'block';
+  document.getElementById('pin-screen').style.display = 'none';
+  document.getElementById('pin-error').style.display = 'none';
+}
+
+function pinTap(n) {
+  if (loginPin.length >= 4) return;
+  loginPin += n;
+  actualizarDots();
+  if (loginPin.length === 4) { setTimeout(verificarPin, 200); }
+}
+
+function pinDel() {
+  loginPin = loginPin.slice(0, -1);
+  actualizarDots();
+  document.getElementById('pin-error').style.display = 'none';
+}
+
+function actualizarDots() {
+  for (var i = 1; i <= 4; i++) {
+    var dot = document.getElementById('pd' + i);
+    if (dot) dot.classList.toggle('on', i <= loginPin.length);
+  }
+}
+
+function verificarPin() {
+  if (loginPin === loginPinCorrecto) {
+    USUARIO_ACTUAL = loginNombre;
+    var topEl = document.getElementById('topbar-usuario');
+    if (topEl) topEl.textContent = loginNombre;
+    document.getElementById('login-bg').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    toast('¡Bienvenida, ' + loginNombre + '! 👋');
+    renderPend();
+    setTimeout(cargarPendientesDelSheet, 1500);
+  } else {
+    loginPin = '';
+    actualizarDots();
+    var err = document.getElementById('pin-error');
+    if (err) err.style.display = 'block';
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+  }
+}
+
+</script>
+
+</body></html>
