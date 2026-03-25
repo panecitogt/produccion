@@ -164,6 +164,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 // ════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════
+var catOpen = [];
 var GER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxamQVIzjXc_WkAPkxww50esXLTpH1KDAuUrg5M2iJoMkuyqp4_aYOXeX-hDjtYH3Bc/exec';
 
 // ════════════════════════════════════════
@@ -286,19 +287,13 @@ function guardarAsignacionSheet(receta, colaboradora, unidades) {
   var cbName = 'pncSave' + Date.now();
   window[cbName] = function(data) {
     try { delete window[cbName]; } catch(e){}
-    var el = document.getElementById(cbName);
-    if (el && el.parentNode) el.parentNode.removeChild(el);
+    var el2 = document.getElementById(cbName);
+    if (el2 && el2.parentNode) el2.parentNode.removeChild(el2);
     if (data && data.status === 'ok') { toast('Asignacion guardada'); }
   };
   var s = document.createElement('script');
   s.id = cbName;
-  s.src = GER_SCRIPT_URL + '?tipo=asignacion' +
-    '&fecha=' + encodeURIComponent(fecha) +
-    '&hora=' + encodeURIComponent(hora) +
-    '&receta=' + encodeURIComponent(receta) +
-    '&colaboradora=' + encodeURIComponent(colaboradora) +
-    '&unidades=' + encodeURIComponent(unidades) +
-    '&callback=' + cbName;
+  s.src = GER_SCRIPT_URL + '?tipo=asignacion&fecha=' + encodeURIComponent(fecha) + '&hora=' + encodeURIComponent(hora) + '&receta=' + encodeURIComponent(receta) + '&colaboradora=' + encodeURIComponent(colaboradora) + '&unidades=' + encodeURIComponent(unidades) + '&callback=' + cbName;
   document.head.appendChild(s);
 }
 function showT(t, btn) {
