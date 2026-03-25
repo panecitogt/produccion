@@ -794,30 +794,35 @@ function clickPesado(btn) {
 // ════════════════════════════════════════════════════════
 function cargarPendientesSheet() {
   if (!USUARIO_ACTUAL || USUARIO_ACTUAL === '') return;
-  var fecha = new Date().toLocaleDateString('es-GT', {day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'/');
-  var url = SCRIPT_URL + '?tipo=pendientes&colab=' + encodeURIComponent(USUARIO_ACTUAL) + '&fecha=' + encodeURIComponent(fecha);
-  fetch(url)
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (data.status === 'ok' && data.data && data.data.length > 0) {
-        for (var i = 0; i < data.data.length; i++) {
-          var p = data.data[i];
-          var existe = false;
-          for (var j = 0; j < PEND.length; j++) {
-            if (PEND[j].nombre === p.receta) { existe = true; break; }
-          }
-          if (!existe) {
-            var rec = mkRec('SH-' + i, p.receta, p.unidades, 'gerencia');
-            PEND.push(rec);
-          }
+  var now = new Date();
+  var dd = String(now.getDate()).padStart(2,'0');
+  var mm = String(now.getMonth()+1).padStart(2,'0');
+  var fecha = dd + '/' + mm + '/' + now.getFullYear();
+  var cbName = 'pncCB' + Date.now();
+  window[cbName] = function(data) {
+    try { delete window[cbName]; } catch(e){}
+    var el = document.getElementById(cbName);
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+    if (data && data.status === 'ok' && data.data && data.data.length > 0) {
+      for (var i = 0; i < data.data.length; i++) {
+        var p = data.data[i];
+        var existe = false;
+        for (var j = 0; j < PEND.length; j++) {
+          if (PEND[j].nombre === p.receta) { existe = true; break; }
         }
-        renderPend();
-        toast('Pendientes actualizados desde gerencia');
+        if (!existe) {
+          var rec = mkRec('SH-' + p.id, p.receta, Number(p.unidades) || 20, 'gerencia');
+          PEND.push(rec);
+        }
       }
-    })
-    .catch(function(){
-      // Sin internet - usar pendientes locales
-    });
+      renderPend();
+      toast('Pendientes actualizados');
+    }
+  };
+  var s = document.createElement('script');
+  s.id = cbName;
+  s.src = SCRIPT_URL + '?tipo=pendientes&colab=' + encodeURIComponent(USUARIO_ACTUAL) + '&fecha=' + encodeURIComponent(fecha) + '&callback=' + cbName;
+  document.head.appendChild(s);
 }
 
 // ═══════════════════════════════════════════════════════════
