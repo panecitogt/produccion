@@ -277,34 +277,31 @@ var CATS = [
 var ASIGNADAS = [];
 var SCRIPT_URL_GER = 'https://script.google.com/macros/s/AKfycbzX4Cyfu5w0UUSlcYFtu7gTWXd5n-plWWUo6H_dVl1UtlL1dKv_IH-lGycngn1tuyFm/exec';
 
-function guardarAsignacionSheet(recNombre, colabId, u) {
-  var col = null;
-  for (var i = 0; i < EQUIPO.length; i++) {
-    if (EQUIPO[i].id === colabId) { col = EQUIPO[i]; break; }
-  }
-  var fecha = new Date().toLocaleDateString('es-GT',{day:'2-digit',month:'2-digit',year:'numeric'});
-  var hora = new Date().toLocaleTimeString('es-GT',{hour:'2-digit',minute:'2-digit'});
-  fetch(SCRIPT_URL_GER, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      tipo: 'asignacion',
-      fecha: fecha,
-      hora: hora,
-      receta: recNombre,
-      colaboradora: colabId,
-      unidades: u
-    })
-  }).then(function(){ toast('✅ Guardado en Sheet'); })
-    .catch(function(){ toast('⚠️ Sin conexión — guardado local'); });
+function guardarAsignacionSheet(receta, colaboradora, unidades) {
+  var ahora = new Date();
+  var dd = String(ahora.getDate()).padStart(2,'0');
+  var mm = String(ahora.getMonth()+1).padStart(2,'0');
+  var fecha = dd+'/'+mm+'/'+ahora.getFullYear();
+  var hora = String(ahora.getHours()).padStart(2,'0')+':'+String(ahora.getMinutes()).padStart(2,'0');
+  var cbName = 'pncSave' + Date.now();
+  window[cbName] = function(data) {
+    try { delete window[cbName]; } catch(e){}
+    var el = document.getElementById(cbName);
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+    if (data && data.status === 'ok') { toast('Asignacion guardada'); }
+  };
+  var s = document.createElement('script');
+  s.id = cbName;
+  s.src = GER_SCRIPT_URL + '?tipo=asignacion' +
+    '&fecha=' + encodeURIComponent(fecha) +
+    '&hora=' + encodeURIComponent(hora) +
+    '&receta=' + encodeURIComponent(receta) +
+    '&colaboradora=' + encodeURIComponent(colaboradora) +
+    '&unidades=' + encodeURIComponent(unidades) +
+    '&callback=' + cbName;
+  document.head.appendChild(s);
 }
-var INVENTARIO = [];
-var catOpen = {};
-var selColabId = null;
-var selRecId = null;
-var selRecN = null;
-var selRecU = 20;
+
 
 // ════════════════════════════════════════
 // INIT
