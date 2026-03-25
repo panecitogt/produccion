@@ -508,14 +508,19 @@ function pickColab(elOrId) {
   var id = (typeof elOrId === 'string') ? elOrId : elOrId.dataset.id;
   selColabId = id;
   for (var ei = 0; ei < EQUIPO.length; ei++) {
-    var eq = EQUIPO[ei];
-    var el = document.getElementById('mco-' + eq.id);
-    var r = document.getElementById('mcr-' + eq.id);
-    if (el) el.classList.toggle('on', eq.id === id);
-    if (r) r.classList.toggle('on', eq.id === id);
+    var eq2 = EQUIPO[ei];
+    var el2 = document.getElementById('mco-' + eq2.id);
+    var r2 = document.getElementById('mcr-' + eq2.id);
+    if (el2) el2.classList.toggle('on', eq2.id === id);
+    if (r2) r2.classList.toggle('on', eq2.id === id);
   }
   var btn = document.getElementById('ma-btn');
-  if (btn) { btn.style.background = 'var(--or)'; btn.style.color = '#fff'; btn.style.cursor = 'pointer'; }
+  if (btn) {
+    btn.style.background = '#C05A20';
+    btn.style.color = '#fff';
+    btn.style.cursor = 'pointer';
+    btn.disabled = false;
+  }
 }
 
 function ajustarCant(d) {
