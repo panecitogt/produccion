@@ -1447,7 +1447,7 @@ function abrirCambioPasoActual(){var rec=R();if(!rec)return;var p=PASOS[rec.paso
 // ════════════════════════════════════════
 var SCRIPT_URL_GET = 'https://script.google.com/macros/s/AKfycbwMH7KbXDLw0oSTD8eGa-_ObEG9LD5apbg_sZjhwmESkLTrsiYgZo2chPoCKVpWWeSx/exec';
 
-function cargarPendientesDelSheet() {
+function cargarPendientesSheet() {
   if (!USUARIO_ACTUAL) return;
   var fecha = new Date();
   var fechaStr = String(fecha.getDate()).padStart(2,'0') + '/' + 
@@ -1606,9 +1606,10 @@ function verificarPin() {
     if (topEl) topEl.textContent = loginNombre;
     document.getElementById('login-bg').style.display = 'none';
     document.getElementById('main-app').style.display = 'block';
-    toast('¡Bienvenida, ' + loginNombre + '! 👋');
+    try{localStorage.setItem('pnc_user',loginNombre);}catch(e){}
+    toast('Bienvenida, '+loginNombre+'!');
     renderPend();
-    setTimeout(cargarPendientesDelSheet, 1500);
+    setTimeout(cargarPendientesSheet, 1500);
   } else {
     loginPin = '';
     actualizarDots();
