@@ -12,7 +12,7 @@ body { font-family: Arial, sans-serif; background: #fff8f0; min-height: 100vh; }
 .header p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
 .container { max-width: 480px; margin: 0 auto; padding: 16px; }
 #loginScreen { padding: 40px 16px; text-align: center; }
-#loginScreen h2 { color: #c0392b; margin-bottom: 24px; font-size: 20px; }
+#loginScreen h2 { color: #c0392b; margin-bottom: 24px; font-sihze: 20px; }
 .pin-display { font-size: 36px; letter-spacing: 12px; color: #333; background: #fff; border: 2px solid #ddd; border-radius: 8px; padding: 8px 16px; margin-bottom: 16px; display: inline-block; min-width: 160px; }
 .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 240px; margin: 0 auto 16px; }
 .numpad button { padding: 18px; font-size: 20px; background: white; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; font-weight: bold; color: #333; }
@@ -57,7 +57,7 @@ body { font-family: Arial, sans-serif; background: #fff8f0; min-height: 100vh; }
 <button class="btn-recargar" onclick="cargarTareas()">Actualizar tareas</button>
 <button class="btn-salir" onclick="cerrarSesion()">Cerrar sesion</button>
 </div>
-</div>
+</div>hh
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxQrxA2xJrw4nhamQcE0fkKu5GXVNxV67rLTwvgqEPpbTh0uKuE1W3QZDylXrsT3JQ/exec";
 const COLABORADORAS={"1001":"Brenda","2002":"Mayra","4004":"Titis","5005":"Yanet"};
@@ -70,7 +70,8 @@ function borrarTodo(){pinActual="";actualizarDisplay();}
 function actualizarDisplay(){let txt="";for(let i=0;i<4;i++)txt+=(pinActual[i]?"*":"_")+" ";document.getElementById("pinDisplay").textContent=txt.trim();document.getElementById("errorMsg").textContent="";}
 function verificarPin(){if(COLABORADORAS[pinActual]){colaboradoraActual=COLABORADORAS[pinActual];fechaActual=hoyFecha();document.getElementById("loginScreen").style.display="none";document.getElementById("appScreen").style.display="block";document.getElementById("nombreColab").textContent="Hola, "+colaboradoraActual+"!";document.getElementById("fechaHoy").textContent=hoyTexto();cargarTareas();}else{document.getElementById("errorMsg").textContent="PIN incorrecto.";pinActual="";actualizarDisplay();}}
 function cargarTareas(){document.getElementById("listaTareas").innerHTML='<div class="spinner">Cargando...</div>';const url=SCRIPT_URL+"?tipo=pendientes&colab="+encodeURIComponent(colaboradoraActual)+"&fecha="+fechaActual+"&callback=respuesta";const s=document.createElement("script");s.src=url;document.body.appendChild(s);}
-function respuesta(data){const lista=document.getElementById("listaTareas");if(!data||!data.data||data.data.length===0){lista.innerHTML='<div class="sin-tareas">No hay tareas pendientes para hoy</div>';return;}lista.innerHTML="";data.data.forEach(function(t){const card=document.createElement("div");card.className="tarea-card";card.id="tarea-"+t.id;card.innerHTML='<div class="receta">'+t.receta+'</div><div class="unidades">Unidades: <strong>'+t.unidades+'</strong></div><button class="btn-completar" onclick="completarTarea(''+t.id+'')">Marcar completada</button>';lista.appendChild(card);});}
+    card.innerHTML='<div class="receta">'+t.receta+'</div><div class="unidades">Unidades: <strong>'+t.unidades+'</strong></div><button class="btn-completar" data-id="'+t.id+'" onclick="completarTarea(this.dataset.id)">Marcar completada</button>';lista.appendChild(card);});}
+  
 function completarTarea(id){const card=document.getElementById("tarea-"+id);if(!card)return;const btn=card.querySelector(".btn-completar");btn.textContent="Guardando...";btn.disabled=true;const url=SCRIPT_URL+"?tipo=asignacion&id="+id+"&estado=Completado&colab="+encodeURIComponent(colaboradoraActual)+"&fecha="+fechaActual+"&callback=confirmacion";const s=document.createElement("script");s.src=url;document.body.appendChild(s);setTimeout(function(){card.classList.add("completada");btn.textContent="Completada";},1500);}
 function confirmacion(data){}
 function cerrarSesion(){colaboradoraActual="";pinActual="";actualizarDisplay();document.getElementById("appScreen").style.display="none";document.getElementById("loginScreen").style.display="block";}
